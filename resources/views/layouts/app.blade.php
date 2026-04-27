@@ -281,7 +281,7 @@
 
 <nav class="top-navbar">
   <div class="top-navbar-inner">
-    <img src="/BarangayNewEra.png" style="width: 35px; height: 35px; border-radius: 50%; margin: 5px;">
+    <img src="/BarangayNewEra.jpg" style="width: 35px; height: 35px; border-radius: 50%; margin: 5px;">
     <a class="brand" href="{{ route('dashboard') }}">
       <span class="brand-name">Barangay Management</span>
     </a>
@@ -315,7 +315,7 @@
         
       {{-- Household Management --}}
       <li class="nav-item"><a href="{{ route('household.purok-index') }}"  class="{{ request()->routeIs('purok.*')  ? 'active' : '' }}">Household & Purok</a>
-    <div class="nav-dropdown">
+    <div class="nav-dropdown"> 
             <a href="{{ route('household.purok-index') }}">Purok</a>
             <a href="{{ route('household.household-index') }}">Households</a>
         </div>
@@ -391,7 +391,7 @@
 <div class="page-content">
 
     <div class="Barangay-logo">
-        <img src="/BarangayNewEra.png">
+        <img src="/BarangayNewEra.jpg">
     </div>
 
     @yield('content')
