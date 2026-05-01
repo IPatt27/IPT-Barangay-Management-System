@@ -40,6 +40,7 @@ Route::delete('/purok/{id}',         [PurokController::class, 'purokDelete'])->n
 Route::get('/household',             [HouseholdController::class, 'householdIndex'])->name('household.household-index');
 Route::get('/household/data',        [HouseholdController::class, 'getHouseholds'])->name('household.data');
 Route::get('/household/add',         [HouseholdController::class, 'householdAdd'])->name('household.add');
+Route::post('/household', [HouseholdController::class, 'householdStore'])->name('household.store');
 Route::get('/household/{id}/view',   [HouseholdController::class, 'householdView'])->name('household.view');
 Route::get('/household/{id}/edit',   [HouseholdController::class, 'householdEdit'])->name('household.edit');
 Route::delete('/household/{id}',     [HouseholdController::class, 'householdDelete'])->name('household.delete');

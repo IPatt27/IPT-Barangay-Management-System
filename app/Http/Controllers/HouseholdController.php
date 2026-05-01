@@ -18,7 +18,14 @@ class HouseholdController extends Controller
 
     public function householdAdd() //Add Household
     {
-        return view('household.householdAdd');
+        $puroks = Purok::all();
+        return view('household.householdAdd', compact('puroks'));
+    }
+
+    public function householdStore(Request $request) //Store Household
+    {
+        Household::create($request->all());
+        return redirect()->route('household.household-index');
     }
 
     public function householdEdit($id) //Edit Household

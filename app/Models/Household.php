@@ -26,4 +26,15 @@ class Household extends Model
     {
         return $this->hasMany(Resident::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($household) {
+            $latest = Household::latest()->first();
+            $number = $latest ? intval(substr($latest->household_code, 2)) + 1 : 1;
+            $household->household_code = 'HH' . str_pad($number, 3, '0', STR_PAD_LEFT);
+        });
+    }
 }
