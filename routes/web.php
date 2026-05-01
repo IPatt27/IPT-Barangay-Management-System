@@ -43,6 +43,7 @@ Route::get('/household/add',         [HouseholdController::class, 'householdAdd'
 Route::get('/household/{id}/view',   [HouseholdController::class, 'householdView'])->name('household.view');
 Route::get('/household/{id}/edit',   [HouseholdController::class, 'householdEdit'])->name('household.edit');
 Route::delete('/household/{id}',     [HouseholdController::class, 'householdDelete'])->name('household.delete');
+Route::put('/household/{id}/update', [HouseholdController::class, 'householdUpdate'])->name('household.update');
 //HOUSEHOLD ROUTES END
 
 

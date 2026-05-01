@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Household;
+use App\Models\Purok;
 
 class HouseholdController extends Controller
 {
@@ -23,13 +24,21 @@ class HouseholdController extends Controller
     public function householdEdit($id) //Edit Household
     {
         $household = Household::findOrFail($id);
-        return view('household.householdEdit', compact('household'));
+        $puroks = Purok::all();
+        return view('household.householdEdit', compact('household', 'puroks'));
     }
 
     public function householdView($id) //View Household
     {
         $household = Household::findOrFail($id);
         return view('household.householdView', compact('household'));
+    }
+
+    public function householdUpdate(Request $request, $id) //Update Household
+    {
+        $household = Household::findOrFail($id);
+        $household->update($request->all());
+        return redirect()->route('household.household-index');
     }
 
     public function householdDelete($id) //Delete Household
