@@ -13,7 +13,7 @@
     </div>
 
     {{-- Table --}}
-    <table id="purok-table" class="table table-bordered">
+    <table id="purok-table" class="table table-bordered table-striped">
         <thead class="table-light">
             <tr>
                 <th>ID</th>

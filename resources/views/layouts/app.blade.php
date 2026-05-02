@@ -266,8 +266,20 @@
     }
 
 
+    #residents-table 
+    {
+        opacity: 0.8;
+    }
 
+    #purok-table 
+    {
+        opacity: 0.8;
+    }
 
+    #household-table 
+    {
+        opacity: 0.8;
+    }
 
 
 
@@ -324,8 +336,7 @@
       {{-- Business --}}
       <li class="nav-item"><a href="{{ route('business.index') }}"   class="{{ request()->routeIs('business.*')   ? 'active' : '' }}">Business Permit</a>
     <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            <a href="{{ route('business.add') }}">Add Business</a>
         </div>
     </li>
 
@@ -340,8 +351,7 @@
       {{-- Commitee Management --}}
       <li class="nav-item"><a href="{{ route('committee.index') }}"  class="{{ request()->routeIs('committee.*')  ? 'active' : '' }}">Committee Management</a>
     <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            <a href="{{ route('committee.add') }}">Add Committee</a>
         </div>
     </li>
 
@@ -360,31 +370,30 @@
             <a href="#">View Residents</a>
         </div>
     </li>
-
-      {{-- Tech --}}
-      <li class="nav-item"><a href="{{ route('technical.index') }}"  class="{{ request()->routeIs('technical.*')  ? 'active' : '' }}">Technical Specs</a>
-    <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
-        </div>
-    </li>
     
     </ul>
 
     <div class="settings-menu">
-        <button class="settings-btn" onclick="toggleSettings()">
-            <i class="fa-solid fa-gear"></i>
-        </button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 13px; font-weight: 600; color: #555;">
+                {{ auth()->user()->name }}
+            </span>
+            <button class="settings-btn" onclick="toggleSettings()">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+        </div>
 
         <div class="settings-dropdown" id="settingsDropdown">
             <a href="#">Profile</a>
             <a href="#">Account Settings</a>
             <a href="#">Help</a>
             <hr>
-            <a href="#" style="color: #e53e3e;">Logout</a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" style="color: #e53e3e; background: none; border: none; padding: 10px 16px; width: 100%; text-align: left; cursor: pointer; font-size: 13.5px;">Logout</button>
+            </form>
         </div>
     </div>
-
   </div>
 </nav>
 

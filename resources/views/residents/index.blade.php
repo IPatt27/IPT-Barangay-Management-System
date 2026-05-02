@@ -3,13 +3,6 @@
 @section('styles')
     {{-- DataTables CSS --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css">
-    
-    <style>
-    #residents-table 
-    {
-        opacity: 0.8;
-    }
-    </style>
 @endsection
 
 @section('content')

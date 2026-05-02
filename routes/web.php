@@ -5,53 +5,85 @@ use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\HouseholdController;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', fn() => redirect()->route('residents.index'));
+Route::get('/', fn() => redirect()->route('login'));
 
-//RESIDENTS ROUTES
-Route::get('/residents',             [ResidentController::class, 'residents'])->name('residents.index');
-Route::get('/residents/data',        [ResidentController::class, 'getResidents'])->name('residents.data');
-Route::get('/residents/add',         [ResidentController::class, 'residentsAdd'])->name('residents.add');
-Route::post('/residents',            [ResidentController::class, 'residentsStore'])->name('residents.store');
-Route::get('/residents/{id}/view',   [ResidentController::class, 'residentsView'])->name('residents.view');
-Route::get('/residents/{id}/edit',   [ResidentController::class, 'residentsEdit'])->name('residents.edit');
-Route::put('/residents/{id}/update', [ResidentController::class, 'residentsUpdate'])->name('residents.update');
-Route::delete('/residents/{id}',     [ResidentController::class, 'residentsDelete'])->name('residents.delete');
-//RESIDENTS ROUTES END
+// BREEZE PROFILE ROUTES
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
+// ALL PROTECTED ROUTES
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/documents',  [BarangayController::class, 'documents'])->name('documents.index');
-Route::get('/blotter',    [BarangayController::class, 'blotter'])->name('blotter.index');
+    //RESIDENTS ROUTES
+    Route::get('/residents',             [ResidentController::class, 'residents'])->name('residents.index');
+    Route::get('/residents/data',        [ResidentController::class, 'getResidents'])->name('residents.data');
+    Route::get('/residents/add',         [ResidentController::class, 'residentsAdd'])->name('residents.add');
+    Route::post('/residents',            [ResidentController::class, 'residentsStore'])->name('residents.store');
+    Route::get('/residents/{id}/view',   [ResidentController::class, 'residentsView'])->name('residents.view');
+    Route::get('/residents/{id}/edit',   [ResidentController::class, 'residentsEdit'])->name('residents.edit');
+    Route::put('/residents/{id}/update', [ResidentController::class, 'residentsUpdate'])->name('residents.update');
+    Route::delete('/residents/{id}',     [ResidentController::class, 'residentsDelete'])->name('residents.delete');
+    //RESIDENTS ROUTES END
 
+    Route::get('/documents',  [BarangayController::class, 'documents'])->name('documents.index');
+    Route::get('/blotter',    [BarangayController::class, 'blotter'])->name('blotter.index');
 
-//PUROK ROUTES
-Route::get('/purok',                 [PurokController::class, 'purok'])->name('household.purok-index');
-Route::get('/purok/data',            [PurokController::class, 'getPuroks'])->name('purok.data');
-Route::get('/purok/add',             [PurokController::class, 'purokAdd'])->name('purok.add');
-Route::post('/purok',                [PurokController::class, 'purokStore'])->name('purok.store');
-Route::get('/purok/{id}/view',       [PurokController::class, 'purokView'])->name('purok.view');
-Route::get('/purok/{id}/edit',       [PurokController::class, 'purokEdit'])->name('purok.edit');
-Route::put('/purok/{id}/update',     [PurokController::class, 'purokUpdate'])->name('purok.update');
-Route::delete('/purok/{id}',         [PurokController::class, 'purokDelete'])->name('purok.delete');
-//PUROK ROUTES END
+    //PUROK ROUTES
+    Route::get('/purok',                 [PurokController::class, 'purok'])->name('household.purok-index');
+    Route::get('/purok/data',            [PurokController::class, 'getPuroks'])->name('purok.data');
+    Route::get('/purok/add',             [PurokController::class, 'purokAdd'])->name('purok.add');
+    Route::post('/purok',                [PurokController::class, 'purokStore'])->name('purok.store');
+    Route::get('/purok/{id}/view',       [PurokController::class, 'purokView'])->name('purok.view');
+    Route::get('/purok/{id}/edit',       [PurokController::class, 'purokEdit'])->name('purok.edit');
+    Route::put('/purok/{id}/update',     [PurokController::class, 'purokUpdate'])->name('purok.update');
+    Route::delete('/purok/{id}',         [PurokController::class, 'purokDelete'])->name('purok.delete');
+    //PUROK ROUTES END
 
+    //HOUSEHOLD ROUTES
+    Route::get('/household',             [HouseholdController::class, 'householdIndex'])->name('household.household-index');
+    Route::get('/household/data',        [HouseholdController::class, 'getHouseholds'])->name('household.data');
+    Route::get('/household/add',         [HouseholdController::class, 'householdAdd'])->name('household.add');
+    Route::post('/household',            [HouseholdController::class, 'householdStore'])->name('household.store');
+    Route::get('/household/{id}/view',   [HouseholdController::class, 'householdView'])->name('household.view');
+    Route::get('/household/{id}/edit',   [HouseholdController::class, 'householdEdit'])->name('household.edit');
+    Route::delete('/household/{id}',     [HouseholdController::class, 'householdDelete'])->name('household.delete');
+    Route::put('/household/{id}/update', [HouseholdController::class, 'householdUpdate'])->name('household.update');
+    //HOUSEHOLD ROUTES END
 
-//HOUSEHOLD ROUTES
-Route::get('/household',             [HouseholdController::class, 'householdIndex'])->name('household.household-index');
-Route::get('/household/data',        [HouseholdController::class, 'getHouseholds'])->name('household.data');
-Route::get('/household/add',         [HouseholdController::class, 'householdAdd'])->name('household.add');
-Route::post('/household', [HouseholdController::class, 'householdStore'])->name('household.store');
-Route::get('/household/{id}/view',   [HouseholdController::class, 'householdView'])->name('household.view');
-Route::get('/household/{id}/edit',   [HouseholdController::class, 'householdEdit'])->name('household.edit');
-Route::delete('/household/{id}',     [HouseholdController::class, 'householdDelete'])->name('household.delete');
-Route::put('/household/{id}/update', [HouseholdController::class, 'householdUpdate'])->name('household.update');
-//HOUSEHOLD ROUTES END
+    // BUSINESS ROUTES
+    Route::get('/business',                 [BarangayController::class, 'business'])->name('business.index');
+    Route::get('/business/data',            [BarangayController::class, 'getBusinesses'])->name('business.data');
+    Route::get('/business/add',             [BarangayController::class, 'businessAdd'])->name('business.add');
+    Route::post('/business',                [BarangayController::class, 'businessStore'])->name('business.store');
+    Route::get('/business/{id}/view',       [BarangayController::class, 'businessView'])->name('business.view');
+    Route::get('/business/{id}/edit',       [BarangayController::class, 'businessEdit'])->name('business.edit');
+    Route::put('/business/{id}/update',     [BarangayController::class, 'businessUpdate'])->name('business.update');
+    Route::delete('/business/{id}',         [BarangayController::class, 'businessDelete'])->name('business.delete');
+    // BUSINESS ROUTES END
 
+    Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
 
-Route::get('/business',   [BarangayController::class, 'business'])->name('business.index');
-Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
-Route::get('/committee',  [BarangayController::class, 'committee'])->name('committee.index');
-Route::get('/reports',    [BarangayController::class, 'reports'])->name('reports.index');
-Route::get('/users',      [BarangayController::class, 'users'])->name('users.index');
-Route::get('/technical',  [BarangayController::class, 'technical'])->name('technical.index');
-Route::get('/dashboard',  [BarangayController::class, 'dashboard'])->name('dashboard');
+    // COMMITTEE ROUTES
+    Route::get('/committee',                [BarangayController::class, 'committee'])->name('committee.index');
+    Route::get('/committee/data',           [BarangayController::class, 'getCommittees'])->name('committee.data');
+    Route::get('/committee/add',            [BarangayController::class, 'committeeAdd'])->name('committee.add');
+    Route::post('/committee',               [BarangayController::class, 'committeeStore'])->name('committee.store');
+    Route::get('/committee/{id}/view',      [BarangayController::class, 'committeeView'])->name('committee.view');
+    Route::get('/committee/{id}/edit',      [BarangayController::class, 'committeeEdit'])->name('committee.edit');
+    Route::put('/committee/{id}/update',    [BarangayController::class, 'committeeUpdate'])->name('committee.update');
+    Route::delete('/committee/{id}',        [BarangayController::class, 'committeeDelete'])->name('committee.delete');
+    // COMMITTEE ROUTES END
+
+    Route::get('/reports',    [BarangayController::class, 'reports'])->name('reports.index');
+    Route::get('/users',      [BarangayController::class, 'users'])->name('users.index');
+    Route::get('/technical',  [BarangayController::class, 'technical'])->name('technical.index');
+    Route::get('/dashboard',  [BarangayController::class, 'dashboard'])->name('dashboard');
+
+});
+
+require __DIR__.'/auth.php';
