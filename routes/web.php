@@ -6,6 +6,8 @@ use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CommitteeController;
 
 Route::get('/', fn() => redirect()->route('login'));
 
@@ -55,28 +57,28 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/household/{id}/update', [HouseholdController::class, 'householdUpdate'])->name('household.update');
     //HOUSEHOLD ROUTES END
 
-    // BUSINESS ROUTES
-    Route::get('/business',                 [BarangayController::class, 'business'])->name('business.index');
-    Route::get('/business/data',            [BarangayController::class, 'getBusinesses'])->name('business.data');
-    Route::get('/business/add',             [BarangayController::class, 'businessAdd'])->name('business.add');
-    Route::post('/business',                [BarangayController::class, 'businessStore'])->name('business.store');
-    Route::get('/business/{id}/view',       [BarangayController::class, 'businessView'])->name('business.view');
-    Route::get('/business/{id}/edit',       [BarangayController::class, 'businessEdit'])->name('business.edit');
-    Route::put('/business/{id}/update',     [BarangayController::class, 'businessUpdate'])->name('business.update');
-    Route::delete('/business/{id}',         [BarangayController::class, 'businessDelete'])->name('business.delete');
+   // BUSINESS ROUTES
+    Route::get('/business',                 [BusinessController::class, 'business'])->name('business.index');
+    Route::get('/business/data',            [BusinessController::class, 'getBusinesses'])->name('business.data');
+    Route::get('/business/add',             [BusinessController::class, 'businessAdd'])->name('business.add');
+    Route::post('/business',                [BusinessController::class, 'businessStore'])->name('business.store');
+    Route::get('/business/{id}/view',       [BusinessController::class, 'businessView'])->name('business.view');
+    Route::get('/business/{id}/edit',       [BusinessController::class, 'businessEdit'])->name('business.edit');
+    Route::put('/business/{id}/update',     [BusinessController::class, 'businessUpdate'])->name('business.update');
+    Route::delete('/business/{id}',         [BusinessController::class, 'businessDelete'])->name('business.delete');
     // BUSINESS ROUTES END
 
     Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
 
-    // COMMITTEE ROUTES
-    Route::get('/committee',                [BarangayController::class, 'committee'])->name('committee.index');
-    Route::get('/committee/data',           [BarangayController::class, 'getCommittees'])->name('committee.data');
-    Route::get('/committee/add',            [BarangayController::class, 'committeeAdd'])->name('committee.add');
-    Route::post('/committee',               [BarangayController::class, 'committeeStore'])->name('committee.store');
-    Route::get('/committee/{id}/view',      [BarangayController::class, 'committeeView'])->name('committee.view');
-    Route::get('/committee/{id}/edit',      [BarangayController::class, 'committeeEdit'])->name('committee.edit');
-    Route::put('/committee/{id}/update',    [BarangayController::class, 'committeeUpdate'])->name('committee.update');
-    Route::delete('/committee/{id}',        [BarangayController::class, 'committeeDelete'])->name('committee.delete');
+   // COMMITTEE ROUTES
+    Route::get('/committee',                [CommitteeController::class, 'committee'])->name('committee.index');
+    Route::get('/committee/data',           [CommitteeController::class, 'getCommittees'])->name('committee.data');
+    Route::get('/committee/add',            [CommitteeController::class, 'committeeAdd'])->name('committee.add');
+    Route::post('/committee',               [CommitteeController::class, 'committeeStore'])->name('committee.store');
+    Route::get('/committee/{id}/view',      [CommitteeController::class, 'committeeView'])->name('committee.view');
+    Route::get('/committee/{id}/edit',      [CommitteeController::class, 'committeeEdit'])->name('committee.edit');
+    Route::put('/committee/{id}/update',    [CommitteeController::class, 'committeeUpdate'])->name('committee.update');
+    Route::delete('/committee/{id}',        [CommitteeController::class, 'committeeDelete'])->name('committee.delete');
     // COMMITTEE ROUTES END
 
     Route::get('/reports',    [BarangayController::class, 'reports'])->name('reports.index');
