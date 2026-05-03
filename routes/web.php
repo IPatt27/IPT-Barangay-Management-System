@@ -116,14 +116,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/officials/{id}/id-card', [BarangayController::class, 'officialsId'])->name('officials.id');
     // OFFICIALS ROUTES END
 
-    // ── USERS
-    Route::get('/users',                    [UserController::class, 'index'])->name('users.index');
-    Route::post('/users',                   [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{id}/edit',          [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{id}',               [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{id}',            [UserController::class, 'destroy'])->name('users.delete');
-
-
     // ── TECHNICAL / BACKUP
     Route::post('/technical/backup',        [BarangayController::class, 'backupDatabase'])->name('technical.backup');
     Route::get('/technical/backup/download',[BarangayController::class, 'downloadBackup'])->name('technical.backup.download');
