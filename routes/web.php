@@ -91,17 +91,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/documents/{id}',        [BarangayController::class, 'documentsDelete'])->name('documents.delete');
     // DOCUMENT ROUTES END
 
-    Route::get('/documents',  [BarangayController::class, 'documents'])->name('documents.index');
-    Route::get('/blotter',    [BarangayController::class, 'blotter'])->name('blotter.index');
-    Route::get('/household',  [BarangayController::class, 'household'])->name('household.index');
-    Route::get('/business',   [BarangayController::class, 'business'])->name('business.index');
-    Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
-    Route::get('/committee',  [BarangayController::class, 'committee'])->name('committee.index');
-    Route::get('/reports',    [BarangayController::class, 'reports'])->name('reports.index');
-    Route::get('/users',      [BarangayController::class, 'users'])->name('users.index');
-    Route::get('/technical',  [BarangayController::class, 'technical'])->name('technical.index');
-    Route::get('/dashboard', [BarangayController::class, 'dashboard'])->name('dashboard');
-
     // BLOTTER ROUTES
     Route::get('/blotter',                          [BarangayController::class, 'blotter'])->name('blotter.index');
     Route::get('/blotter/data',                     [BarangayController::class, 'getBlotters'])->name('blotter.data');
