@@ -61,7 +61,7 @@ class DocumentController extends Controller
             ->addColumn('action', function ($doc) {
                 return '
                     <a href="' . route('documents.print', $doc->id) . '"
-                       class="btn btn-sm btn-success" target="_blank">
+                       class="btn btn-sm btn-action-print" target="_blank">
                        <i class="fa fa-print"></i> Print
                     </a>
                     <form action="' . route('documents.delete', $doc->id) . '"
@@ -69,7 +69,7 @@ class DocumentController extends Controller
                           onsubmit="return confirm(\'Delete this document?\')">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
-                        <button class="btn btn-sm btn-danger">
+                        <button class="btn btn-sm btn-action-delete">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>
