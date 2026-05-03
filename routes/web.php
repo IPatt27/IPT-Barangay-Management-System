@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarangayController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\HouseholdController;
@@ -130,6 +131,28 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/officials/{id}',      [BarangayController::class, 'officialsDelete'])->name('officials.delete');
     Route::get('/officials/{id}/id-card', [BarangayController::class, 'officialsId'])->name('officials.id');
     // OFFICIALS ROUTES END
+
+    // ── USERS
+    Route::get('/users',                    [UserController::class, 'index'])->name('users.index');
+    Route::post('/users',                   [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}/edit',          [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}',               [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}',            [UserController::class, 'destroy'])->name('users.delete');
+
+    // ── OTHER PAGES
+    Route::get('/documents',  [BarangayController::class, 'documents'])->name('documents.index');
+    Route::get('/blotter',    [BarangayController::class, 'blotter'])->name('blotter.index');
+    Route::get('/household',  [BarangayController::class, 'household'])->name('household.index');
+    Route::get('/business',   [BarangayController::class, 'business'])->name('business.index');
+    Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
+    Route::get('/committee',  [BarangayController::class, 'committee'])->name('committee.index');
+    Route::get('/reports',    [BarangayController::class, 'reports'])->name('reports.index');
+    Route::get('/technical',  [BarangayController::class, 'technical'])->name('technical.index');
+
+    // ── TECHNICAL / BACKUP
+    Route::post('/technical/backup',        [BarangayController::class, 'backupDatabase'])->name('technical.backup');
+    Route::get('/technical/backup/download',[BarangayController::class, 'downloadBackup'])->name('technical.backup.download');
+    Route::post('/technical/restore',       [BarangayController::class, 'restoreDatabase'])->name('technical.restore');
 });
 
 require __DIR__.'/auth.php';
