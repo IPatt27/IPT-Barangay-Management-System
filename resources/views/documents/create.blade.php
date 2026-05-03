@@ -3,9 +3,6 @@
 @section('content')
 
 <div class="d-flex align-items-center gap-2 mb-3">
-    <a href="{{ route('documents.index') }}" class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-arrow-left"></i>
-    </a>
     <h2 class="mb-0">Issue New Document</h2>
 </div>
 
