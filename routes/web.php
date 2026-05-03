@@ -9,6 +9,9 @@ use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CommitteeController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\BlotterController;
+use App\Http\Controllers\OfficialController;
 
 Route::get('/', fn() => redirect()->route('login'));
 
@@ -83,38 +86,35 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard',  [BarangayController::class, 'dashboard'])->name('dashboard');
 
     // DOCUMENT ROUTES
-    Route::get('/documents',                [BarangayController::class, 'documents'])->name('documents.index');
-    Route::get('/documents/data',           [BarangayController::class, 'getDocuments'])->name('documents.data');
-    Route::get('/documents/create',         [BarangayController::class, 'documentsCreate'])->name('documents.create');
-    Route::post('/documents',               [BarangayController::class, 'documentsStore'])->name('documents.store');
-    Route::get('/documents/{id}/print',     [BarangayController::class, 'documentsPrint'])->name('documents.print');
-    Route::delete('/documents/{id}',        [BarangayController::class, 'documentsDelete'])->name('documents.delete');
-    // DOCUMENT ROUTES END
-
+    Route::get('/documents',              [DocumentController::class, 'index'])->name('documents.index');
+    Route::get('/documents/data',         [DocumentController::class, 'getData'])->name('documents.data');
+    Route::get('/documents/create',       [DocumentController::class, 'create'])->name('documents.create');
+    Route::post('/documents',             [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{id}/print',   [DocumentController::class, 'print'])->name('documents.print');
+    Route::delete('/documents/{id}',      [DocumentController::class, 'delete'])->name('documents.delete');
+    
     // BLOTTER ROUTES
-    Route::get('/blotter',                          [BarangayController::class, 'blotter'])->name('blotter.index');
-    Route::get('/blotter/data',                     [BarangayController::class, 'getBlotters'])->name('blotter.data');
-    Route::get('/blotter/create',                   [BarangayController::class, 'blotterCreate'])->name('blotter.create');
-    Route::post('/blotter',                         [BarangayController::class, 'blotterStore'])->name('blotter.store');
-    Route::get('/blotter/{id}/view',                [BarangayController::class, 'blotterView'])->name('blotter.view');
-    Route::get('/blotter/{id}/edit',                [BarangayController::class, 'blotterEdit'])->name('blotter.edit');
-    Route::put('/blotter/{id}',                     [BarangayController::class, 'blotterUpdate'])->name('blotter.update');
-    Route::delete('/blotter/{id}',                  [BarangayController::class, 'blotterDelete'])->name('blotter.delete');
-    Route::delete('/blotter/attachment/{id}',       [BarangayController::class, 'blotterDeleteAttachment'])->name('blotter.attachment.delete');
-    Route::get('/blotter/{id}/print',               [BarangayController::class, 'blotterPrint'])->name('blotter.print');
-    // BLOTTER ROUTES END
-
+    Route::get('/blotter',                      [BlotterController::class, 'index'])->name('blotter.index');
+    Route::get('/blotter/data',                 [BlotterController::class, 'getData'])->name('blotter.data');
+    Route::get('/blotter/create',               [BlotterController::class, 'create'])->name('blotter.create');
+    Route::post('/blotter',                     [BlotterController::class, 'store'])->name('blotter.store');
+    Route::get('/blotter/{id}/view',            [BlotterController::class, 'view'])->name('blotter.view');
+    Route::get('/blotter/{id}/edit',            [BlotterController::class, 'edit'])->name('blotter.edit');
+    Route::put('/blotter/{id}',                 [BlotterController::class, 'update'])->name('blotter.update');
+    Route::delete('/blotter/{id}',              [BlotterController::class, 'delete'])->name('blotter.delete');
+    Route::delete('/blotter/attachment/{id}',   [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
+    Route::get('/blotter/{id}/print',           [BlotterController::class, 'print'])->name('blotter.print');
+    
     // OFFICIALS ROUTES
-    Route::get('/officials',              [BarangayController::class, 'officials'])->name('officials.index');
-    Route::get('/officials/data',         [BarangayController::class, 'getOfficials'])->name('officials.data');
-    Route::get('/officials/create',       [BarangayController::class, 'officialsCreate'])->name('officials.create');
-    Route::post('/officials',             [BarangayController::class, 'officialsStore'])->name('officials.store');
-    Route::get('/officials/{id}/view',    [BarangayController::class, 'officialsView'])->name('officials.view');
-    Route::get('/officials/{id}/edit',    [BarangayController::class, 'officialsEdit'])->name('officials.edit');
-    Route::put('/officials/{id}',         [BarangayController::class, 'officialsUpdate'])->name('officials.update');
-    Route::delete('/officials/{id}',      [BarangayController::class, 'officialsDelete'])->name('officials.delete');
-    Route::get('/officials/{id}/id-card', [BarangayController::class, 'officialsId'])->name('officials.id');
-    // OFFICIALS ROUTES END
+    Route::get('/officials',              [OfficialController::class, 'index'])->name('officials.index');
+    Route::get('/officials/data',         [OfficialController::class, 'getData'])->name('officials.data');
+    Route::get('/officials/create',       [OfficialController::class, 'create'])->name('officials.create');
+    Route::post('/officials',             [OfficialController::class, 'store'])->name('officials.store');
+    Route::get('/officials/{id}/view',    [OfficialController::class, 'view'])->name('officials.view');
+    Route::get('/officials/{id}/edit',    [OfficialController::class, 'edit'])->name('officials.edit');
+    Route::put('/officials/{id}',         [OfficialController::class, 'update'])->name('officials.update');
+    Route::delete('/officials/{id}',      [OfficialController::class, 'delete'])->name('officials.delete');
+    Route::get('/officials/{id}/id-card', [OfficialController::class, 'idCard'])->name('officials.id');
 
 });
 
