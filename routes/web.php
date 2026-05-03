@@ -33,9 +33,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/residents/{id}',     [ResidentController::class, 'residentsDelete'])->name('residents.delete');
     //RESIDENTS ROUTES END
 
-    Route::get('/documents',  [BarangayController::class, 'documents'])->name('documents.index');
-    Route::get('/blotter',    [BarangayController::class, 'blotter'])->name('blotter.index');
-
     //PUROK ROUTES
     Route::get('/purok',                 [PurokController::class, 'purok'])->name('household.purok-index');
     Route::get('/purok/data',            [PurokController::class, 'getPuroks'])->name('purok.data');
@@ -68,8 +65,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/business/{id}/update',     [BusinessController::class, 'businessUpdate'])->name('business.update');
     Route::delete('/business/{id}',         [BusinessController::class, 'businessDelete'])->name('business.delete');
     // BUSINESS ROUTES END
-
-    Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
 
    // COMMITTEE ROUTES
     Route::get('/committee',                [CommitteeController::class, 'committee'])->name('committee.index');
@@ -139,15 +134,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/users/{id}',               [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}',            [UserController::class, 'destroy'])->name('users.delete');
 
-    // ── OTHER PAGES
-    Route::get('/documents',  [BarangayController::class, 'documents'])->name('documents.index');
-    Route::get('/blotter',    [BarangayController::class, 'blotter'])->name('blotter.index');
-    Route::get('/household',  [BarangayController::class, 'household'])->name('household.index');
-    Route::get('/business',   [BarangayController::class, 'business'])->name('business.index');
-    Route::get('/officials',  [BarangayController::class, 'officials'])->name('officials.index');
-    Route::get('/committee',  [BarangayController::class, 'committee'])->name('committee.index');
-    Route::get('/reports',    [BarangayController::class, 'reports'])->name('reports.index');
-    Route::get('/technical',  [BarangayController::class, 'technical'])->name('technical.index');
 
     // ── TECHNICAL / BACKUP
     Route::post('/technical/backup',        [BarangayController::class, 'backupDatabase'])->name('technical.backup');
