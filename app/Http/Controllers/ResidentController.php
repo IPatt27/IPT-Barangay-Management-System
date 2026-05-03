@@ -65,12 +65,12 @@ class ResidentController extends Controller
         return DataTables::of($residents)
             ->addColumn('action', function($resident) {
                 return '
-                    <a href="' . route('residents.view', $resident->id) . '" class="btn btn-sm btn-primary">View</a>
-                    <a href="' . route('residents.edit', $resident->id) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' . route('residents.view', $resident->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a>
+                    <a href="' . route('residents.edit', $resident->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a>
                     <form action="' . route('residents.delete', $resident->id) . '" method="POST" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i> Delete</button>
                     </form>
                 ';
             })
