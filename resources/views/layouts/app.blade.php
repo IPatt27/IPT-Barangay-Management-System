@@ -285,8 +285,23 @@
         opacity: 0.8;
     }
 
-
-
+    .btn-action-view    { background: #1a3a5c; color: #fff; border: none; }
+    .btn-action-view:hover { background: #15304d; color: #fff; }
+    
+    .btn-action-edit    { background: #e8a020; color: #fff; border: none; }
+    .btn-action-edit:hover { background: #d4911c; color: #fff; }
+    
+    .btn-action-print   { background: #2d6a4f; color: #fff; border: none; }
+    .btn-action-print:hover { background: #245a42; color: #fff; }
+    
+    .btn-action-delete  { background: #dc3545; color: #fff; border: none; }
+    .btn-action-delete:hover { background: #c82333; color: #fff; }
+    
+    .btn-action-id      { background: #0891b2; color: #fff; border: none; }
+    .btn-action-id:hover { background: #0779a0; color: #fff; }
+    
+    .btn-action-primary { background: #2d6a4f; color: #fff; border: none; font-weight: 600; }
+    .btn-action-primary:hover { background: #245a42; color: #fff; }
 
 </style>
 
