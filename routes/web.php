@@ -116,10 +116,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/officials/{id}/id-card', [BarangayController::class, 'officialsId'])->name('officials.id');
     // OFFICIALS ROUTES END
 
-    // ── TECHNICAL / BACKUP
-    Route::post('/technical/backup',        [BarangayController::class, 'backupDatabase'])->name('technical.backup');
-    Route::get('/technical/backup/download',[BarangayController::class, 'downloadBackup'])->name('technical.backup.download');
-    Route::post('/technical/restore',       [BarangayController::class, 'restoreDatabase'])->name('technical.restore');
 });
 
 require __DIR__.'/auth.php';

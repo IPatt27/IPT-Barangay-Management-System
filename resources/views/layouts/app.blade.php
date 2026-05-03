@@ -281,6 +281,10 @@
         opacity: 0.8;
     }
 
+    #documents-table{
+        opacity: 0.8;
+    }
+
 
 
 

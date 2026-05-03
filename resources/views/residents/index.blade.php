@@ -1,13 +1,10 @@
 @extends('layouts.app')
 
 @section('styles')
-    {{-- DataTables CSS --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css">
 @endsection
 
 @section('content')
-
-    {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Resident Management</h2>
         <a href="{{ route('residents.add') }}" class="btn btn-success">+ Add New Resident</a>
