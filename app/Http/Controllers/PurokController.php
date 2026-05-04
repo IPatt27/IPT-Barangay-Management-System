@@ -59,12 +59,12 @@ class PurokController extends Controller
         return DataTables::of($puroks)
             ->addColumn('action', function($purok) {
                 return '
-                    <a href="' . route('purok.view', $purok->id) . '" class="btn btn-sm btn-primary">View</a>
-                    <a href="' . route('purok.edit', $purok->id) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' . route('purok.view', $purok->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a>
+                    <a href="' . route('purok.edit', $purok->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>Edit</a>
                     <form action="' . route('purok.delete', $purok->id) . '" method="POST" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>Delete</button>
                     </form>
                 ';
             })

@@ -70,7 +70,7 @@ class ResidentController extends Controller
                     <form action="' . route('residents.delete', $resident->id) . '" method="POST" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i> Delete</button>
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
                     </form>
                 ';
             })
