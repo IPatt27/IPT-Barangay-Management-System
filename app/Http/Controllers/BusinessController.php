@@ -61,12 +61,12 @@ class BusinessController extends Controller
         return DataTables::of($businesses)
             ->addColumn('action', function($business) {
                 return '
-                    <a href="' . route('business.view', $business->id) . '" class="btn btn-sm btn-primary">View</a>
-                    <a href="' . route('business.edit', $business->id) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' . route('business.view', $business->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>
+                    <a href="' . route('business.edit', $business->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>Edit</a>
                     <form action="' . route('business.delete', $business->id) . '" method="POST" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>Delete</button>
                     </form>
                 ';
             })
