@@ -322,7 +322,11 @@
       <li class="nav-item">
         <a href="{{ route('residents.index') }}" class="{{ request()->routeIs('residents.*') ? 'active' : '' }}">Resident Management</a>
         <div class="nav-dropdown">
+
+            @hasanyrole('admin|secretary')
             <a href="{{ route('residents.add') }}">Add Resident</a>
+            @endhasanyrole
+            
             <a href="#">Archived Residents</a>
         </div>
       </li>
@@ -383,13 +387,15 @@
     </li>
 
       {{-- User Management --}}
-      <li class="nav-item"><a href="{{ route('users.index') }}"      class="{{ request()->routeIs('users.*')      ? 'active' : '' }}">User Management</a>
+    @role('admin')
+    <li class="nav-item"><a href="{{ route('users.index') }}"      class="{{ request()->routeIs('users.*')      ? 'active' : '' }}">User Management</a>
     <div class="nav-dropdown">
             <a href="#">Add Resident</a>
             <a href="#">View Residents</a>
         </div>
     </li>
-    
+    @endrole
+
     </ul>
 
     <div class="settings-menu">

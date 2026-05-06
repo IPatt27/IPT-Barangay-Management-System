@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Purok;
+use Illuminate\Support\Facades\Auth;
 
 class PurokController extends Controller
 {
@@ -58,15 +59,23 @@ class PurokController extends Controller
         $puroks = Purok::withCount('households');
         return DataTables::of($puroks)
             ->addColumn('action', function($purok) {
-                return '
-                    <a href="' . route('purok.view', $purok->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a>
-                    <a href="' . route('purok.edit', $purok->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>Edit</a>
-                    <form action="' . route('purok.delete', $purok->id) . '" method="POST" style="display:inline;">
-                        ' . csrf_field() . '
-                        ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>Delete</button>
-                    </form>
-                ';
+
+                   $buttons = '<a href="' . route('purok.view', $purok->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
+
+                    if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
+                        $buttons .= '<a href="' . route('purok.edit', $purok->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
+                    }
+
+                    if (Auth::user()->hasRole('admin')) {
+                        $buttons .= '
+                            <form action="' . route('purok.delete', $purok->id) . '" method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                            </form>
+                        ';
+                    }
+                return $buttons;
             })
             ->rawColumns(['action'])
             ->make(true);

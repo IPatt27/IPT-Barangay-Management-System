@@ -68,11 +68,11 @@ class ResidentController extends Controller
 
                     $buttons = '<a href="' . route('residents.view', $resident->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
 
-                    if (Auth::user()->roles->pluck('name')->contains('admin') || Auth::user()->roles->pluck('name')->contains('secretary')) {
+                    if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
                         $buttons .= '<a href="' . route('residents.edit', $resident->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
                     }
 
-                    if (Auth::user()->roles->pluck('name')->contains('admin')) {
+                    if (Auth::user()->hasRole('admin')) {
                         $buttons .= '
                             <form action="' . route('residents.delete', $resident->id) . '" method="POST" style="display:inline;">
                                 ' . csrf_field() . '

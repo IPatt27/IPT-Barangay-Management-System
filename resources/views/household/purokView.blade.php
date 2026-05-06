@@ -22,8 +22,11 @@
 
         {{-- Buttons --}}
         <div class="d-flex justify-content-end gap-2">
-            <a href="{{ route('household.purok-index') }}" class="btn btn-danger">Back</a>
+            <a href="{{ route('household.purok-index') }}" class="btn btn-primary">Back</a>
+
+            @hasanyrole('admin|secretary')
             <a href="{{ route('purok.edit', $purok->id) }}" class="btn btn-success">Edit</a>
+            @endhasanyrole
         </div>
 
     </div>

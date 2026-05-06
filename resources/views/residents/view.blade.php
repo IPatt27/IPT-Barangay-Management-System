@@ -71,7 +71,11 @@
 
     <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('residents.index') }}" class="btn btn-primary">Back</a>
+
+        @hasanyrole('admin|secretary')
         <a href="{{ route('residents.edit', $resident->id) }}" class="btn btn-success">Edit</a>
+        @endhasanyrole
+        
     </div>
 
 </div>
