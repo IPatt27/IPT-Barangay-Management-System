@@ -361,15 +361,18 @@
       {{-- Business --}}
       <li class="nav-item"><a href="{{ route('business.index') }}"   class="{{ request()->routeIs('business.*')   ? 'active' : '' }}">Business Permit</a>
     <div class="nav-dropdown">
+        @hasanyrole('admin|secretary')
             <a href="{{ route('business.add') }}">Add Business</a>
+        @endhasanyrole
         </div>
     </li>
 
       {{-- Officials --}}
       <li class="nav-item"><a href="{{ route('officials.index') }}"  class="{{ request()->routeIs('officials.*')  ? 'active' : '' }}">Officials & Staff</a>
       <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            @hasanyrole('admin|secretary')
+            <a href="{{ route('officials.create') }}">Add Officials</a>
+            @endhasanyrole
         </div>
     </li>
 

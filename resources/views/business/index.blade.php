@@ -22,7 +22,9 @@
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Business Permit Management</h2>
-        <a href="{{ route('business.add') }}" class="btn btn-success">+ Register Business</a>
+        @hasanyrole('admin|secretary')
+            <a href="{{ route('business.add') }}" class="btn btn-success">+ Register Business</a>
+        @endhasanyrole
     </div>
 
     {{-- Table --}}

@@ -75,7 +75,10 @@
     {{-- Buttons --}}
     <div class="form-buttons">
         <a href="{{ route('business.index') }}" class="btn btn-primary">Back</a>
+
+        @hasanyrole('admin|secretary')
         <a href="{{ route('business.edit', $business->id) }}" class="btn btn-success">Edit</a>
+        @endhasanyrole
     </div>
 
 @endsection
