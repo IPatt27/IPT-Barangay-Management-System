@@ -8,9 +8,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Document Issuance</h2>
-        <a href="{{ route('documents.create') }}" class="btn btn-success">
-            + Issue New Document
-        </a>
+
+        @hasanyrole('admin|secretary')
+        <a href="{{ route('documents.create') }}" class="btn btn-success">+ Issue New Document</a>
+        @endhasanyrole
+        
     </div>
 
     {{-- Success message --}}

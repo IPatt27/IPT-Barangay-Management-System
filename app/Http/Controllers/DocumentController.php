@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\Resident;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
@@ -59,21 +60,26 @@ class DocumentController extends Controller
                 return $doc->resident->first_name . ' ' . $doc->resident->last_name;
             })
             ->addColumn('action', function ($doc) {
-                return '
-                    <a href="' . route('documents.print', $doc->id) . '"
-                       class="btn btn-sm btn-action-print" target="_blank">
-                       <i class="fa fa-print"></i> Print
-                    </a>
-                    <form action="' . route('documents.delete', $doc->id) . '"
-                          method="POST" style="display:inline;"
-                          onsubmit="return confirm(\'Delete this document?\')">
-                        ' . csrf_field() . '
-                        ' . method_field('DELETE') . '
-                        <button class="btn btn-sm btn-action-delete">
-                            <i class="fa fa-trash"></i> Delete
-                        </button>
-                    </form>
-                ';
+                $buttons = '<a href="' . route('documents.print', $doc->id) . '"
+                    class="btn btn-sm btn-action-print" target="_blank">
+                    <i class="fa fa-print"></i> Print
+                </a> ';
+
+                if (Auth::user()->hasRole('admin')) {
+                    $buttons .= '
+                        <form action="' . route('documents.delete', $doc->id) . '"
+                            method="POST" style="display:inline;"
+                            onsubmit="return confirm(\'Delete this document?\')">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button class="btn btn-sm btn-action-delete">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    ';
+                }
+
+                return $buttons;
             })
             ->rawColumns(['action'])
             ->make(true);

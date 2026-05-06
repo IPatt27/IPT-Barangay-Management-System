@@ -8,9 +8,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 style="font-size:28px; font-weight:700; color:#1a1a1a;">Blotter Management</h2>
-    <a href="{{ route('blotter.create') }}" class="btn btn-success" style="background:#2d6a4f; border:none; font-weight:600;">
-        <i class="fa fa-plus me-1"></i> Record New Blotter
-    </a>
+    @hasanyrole('admin|secretary')
+        <a href="{{ route('blotter.create') }}" class="btn btn-success">+ Record New Blotter</a>
+    @endhasanyrole
 </div>
 
 @if(session('success'))

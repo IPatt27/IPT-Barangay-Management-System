@@ -335,16 +335,18 @@
       <li class="nav-item">
         <a href="{{ route('documents.index') }}"  class="{{ request()->routeIs('documents.*')  ? 'active' : '' }}">Document Issuance</a>
         <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            @hasanyrole('admin|secretary')
+            <a href="{{ route('documents.create') }}">Create Document</a>
+            @endhasanyrole
         </div>
       </li>
 
       {{-- Blotter --}}
       <li class="nav-item"><a href="{{ route('blotter.index') }}"    class="{{ request()->routeIs('blotter.*')    ? 'active' : '' }}">Blotter Management</a>
         <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            @hasanyrole('admin|secretary')
+            <a href="{{ route('blotter.create') }}">Create Blotter</a>
+            @endhasanyrole
         </div>
         </li>
         
