@@ -12,6 +12,8 @@ use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\BlotterController;
 use App\Http\Controllers\OfficialController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', fn() => redirect()->route('login'));
 
@@ -23,8 +25,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [BarangayController::class, 'dashboard'])->name('dashboard');
-    Route::get('/reports',   [BarangayController::class, 'reports'])->name('reports.index');
-    Route::get('/technical', [BarangayController::class, 'technical'])->name('technical.index');
 
     // ── ALL ROLES CAN VIEW ──
     Route::get('/residents',                    [ResidentController::class, 'residents'])->name('residents.index');
@@ -60,6 +60,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/officials/data',               [OfficialController::class, 'getData'])->name('officials.data');
     Route::get('/officials/{id}/view',          [OfficialController::class, 'view'])->name('officials.view');
     Route::get('/officials/{id}/id-card',       [OfficialController::class, 'idCard'])->name('officials.id');
+
+    Route::get('/payments',                     [PaymentController::class, 'paymentDashboard'])->name('payments.index');
+    Route::post('/payments/store',              [PaymentController::class, 'paymentStore'])->name('payments.store');
+
+    Route::get('/reports',                      [ReportController::class, 'reports'])->name('reports.index');
+    Route::get('/reports/data',                 [ReportController::class, 'getReportsData'])->name('reports.data');
 
     // ── ADMIN AND SECRETARY (create and edit) ──
     Route::middleware(['role:admin|secretary'])->group(function () {
@@ -114,10 +120,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/blotter/{id}',                  [BlotterController::class, 'delete'])->name('blotter.delete');
         Route::delete('/blotter/attachment/{id}',       [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
         Route::delete('/officials/{id}',                [OfficialController::class, 'delete'])->name('officials.delete');
-        Route::get('/users',             [UserController::class, 'users'])->name('users.index');
-        Route::get('/users/data',        [UserController::class, 'getUsers'])->name('users.data');
-        Route::get('/users/{id}/edit',   [UserController::class, 'usersEdit'])->name('users.edit');
-        Route::put('/users/{id}/update', [UserController::class, 'usersUpdate'])->name('users.update');
+        Route::get('/users',                            [UserController::class, 'users'])->name('users.index');
+        Route::get('/users/data',                       [UserController::class, 'getUsers'])->name('users.data');
+        Route::get('/users/{id}/edit',                  [UserController::class, 'usersEdit'])->name('users.edit');
+        Route::put('/users/{id}/update',                 [UserController::class, 'usersUpdate'])->name('users.update');
     });
 
 });

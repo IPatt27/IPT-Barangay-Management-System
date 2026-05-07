@@ -391,8 +391,6 @@
       {{-- Reporst --}}
       <li class="nav-item"><a href="{{ route('reports.index') }}"    class="{{ request()->routeIs('reports.*')    ? 'active' : '' }}">Reports & Analytics</a>
     <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
         </div>
     </li>
 
@@ -404,6 +402,13 @@
         </div>
     </li>
     @endrole
+
+    {{-- Payments --}}
+      <li class="nav-item">
+        <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}">Payments</a>
+        <div class="nav-dropdown">
+        </div>
+      </li>
 
     </ul>
 

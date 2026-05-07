@@ -86,6 +86,17 @@
             </select>
         </div>
     </div>
+    
+        {{-- Voter Status --}}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Voter Status</label>
+            <select name="is_voter" class="form-select">
+                <option value="0" {{ old('is_voter', $resident->is_voter) == 0 ? 'selected' : '' }}>Not Registered</option>
+                <option value="1" {{ old('is_voter', $resident->is_voter) == 1 ? 'selected' : '' }}>Registered Voter</option>
+            </select>
+        </div>
+    </div>
 
     <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('residents.index', $resident->id) }}" class="btn btn-danger">Cancel</a>
