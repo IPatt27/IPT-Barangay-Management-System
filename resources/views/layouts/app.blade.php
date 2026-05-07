@@ -285,6 +285,11 @@
         opacity: 0.8;
     }
 
+    #users-table{
+        opacity: 0.8;
+    }
+
+
     .btn-action-view    { background: #1a3a5c; color: #fff; border: none; }
     .btn-action-view:hover { background: #15304d; color: #fff; }
     
@@ -395,8 +400,7 @@
     @role('admin')
     <li class="nav-item"><a href="{{ route('users.index') }}"      class="{{ request()->routeIs('users.*')      ? 'active' : '' }}">User Management</a>
     <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            <a href="{{ route('users.index') }}">Change Roles</a>
         </div>
     </li>
     @endrole

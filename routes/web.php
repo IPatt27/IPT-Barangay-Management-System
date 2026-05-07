@@ -114,7 +114,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/blotter/{id}',                  [BlotterController::class, 'delete'])->name('blotter.delete');
         Route::delete('/blotter/attachment/{id}',       [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
         Route::delete('/officials/{id}',                [OfficialController::class, 'delete'])->name('officials.delete');
-        Route::get('/users',                            [BarangayController::class, 'users'])->name('users.index');
+        Route::get('/users',             [UserController::class, 'users'])->name('users.index');
+        Route::get('/users/data',        [UserController::class, 'getUsers'])->name('users.data');
+        Route::get('/users/{id}/edit',   [UserController::class, 'usersEdit'])->name('users.edit');
+        Route::put('/users/{id}/update', [UserController::class, 'usersUpdate'])->name('users.update');
     });
 
 });

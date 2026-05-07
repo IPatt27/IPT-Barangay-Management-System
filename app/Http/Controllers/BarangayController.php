@@ -49,10 +49,6 @@ class BarangayController extends Controller
         ));
     }
 
-    public function users()
-    {
-        return view('users');
-    }
 
     
     // ── DASHBOARD ─────────────────────────────────────────────────────────────
