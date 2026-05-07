@@ -390,8 +390,6 @@
 
       {{-- Reporst --}}
       <li class="nav-item"><a href="{{ route('reports.index') }}"    class="{{ request()->routeIs('reports.*')    ? 'active' : '' }}">Reports & Analytics</a>
-    <div class="nav-dropdown">
-        </div>
     </li>
 
       {{-- User Management --}}
