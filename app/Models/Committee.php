@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Committee extends Model
 {
-    use HasFactory;
+    protected $table = 'committee_records';
 
     protected $fillable = [
-        'committee_name',
-        'chairperson',
+        'committee_slug',
+        'type',
+        'title',
+        'file_path',
         'description',
-        'status',
     ];
 }

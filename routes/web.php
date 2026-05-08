@@ -44,9 +44,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/business/data',                [BusinessController::class, 'getBusinesses'])->name('business.data');
     Route::get('/business/{id}/view',           [BusinessController::class, 'businessView'])->name('business.view');
 
-    Route::get('/committee',                    [CommitteeController::class, 'committee'])->name('committee.index');
-    Route::get('/committee/data',               [CommitteeController::class, 'getCommittees'])->name('committee.data');
-    Route::get('/committee/{id}/view',          [CommitteeController::class, 'committeeView'])->name('committee.view');
+    Route::get('/committee',                    [CommitteeController::class, 'index'])->name('committee.index');
+    Route::get('/committee/{slug}',             [CommitteeController::class, 'show'])->name('committee.view');
 
     Route::get('/documents',                    [DocumentController::class, 'index'])->name('documents.index');
     Route::get('/documents/data',               [DocumentController::class, 'getData'])->name('documents.data');
@@ -86,15 +85,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/household/{id}/edit',      [HouseholdController::class, 'householdEdit'])->name('household.edit');
         Route::put('/household/{id}/update',    [HouseholdController::class, 'householdUpdate'])->name('household.update');
 
+        Route::post('/committee/{slug}/upload', [CommitteeController::class, 'upload'])->name('committee.upload');
+        Route::delete('/committee/{slug}/records/{id}', [CommitteeController::class, 'deleteRecord'])->name('committee.record.delete');
+        Route::put('/committee/{slug}/records/{id}',    [CommitteeController::class, 'updateRecord'])->name('committee.record.update');
+
         Route::get('/business/add',             [BusinessController::class, 'businessAdd'])->name('business.add');
         Route::post('/business',                [BusinessController::class, 'businessStore'])->name('business.store');
         Route::get('/business/{id}/edit',       [BusinessController::class, 'businessEdit'])->name('business.edit');
         Route::put('/business/{id}/update',     [BusinessController::class, 'businessUpdate'])->name('business.update');
-
-        Route::get('/committee/add',            [CommitteeController::class, 'committeeAdd'])->name('committee.add');
-        Route::post('/committee',               [CommitteeController::class, 'committeeStore'])->name('committee.store');
-        Route::get('/committee/{id}/edit',      [CommitteeController::class, 'committeeEdit'])->name('committee.edit');
-        Route::put('/committee/{id}/update',    [CommitteeController::class, 'committeeUpdate'])->name('committee.update');
 
         Route::get('/documents/create',         [DocumentController::class, 'create'])->name('documents.create');
         Route::post('/documents',               [DocumentController::class, 'store'])->name('documents.store');
@@ -116,7 +114,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/purok/{id}',                    [PurokController::class, 'purokDelete'])->name('purok.delete');
         Route::delete('/household/{id}',                [HouseholdController::class, 'householdDelete'])->name('household.delete');
         Route::delete('/business/{id}',                 [BusinessController::class, 'businessDelete'])->name('business.delete');
-        Route::delete('/committee/{id}',                [CommitteeController::class, 'committeeDelete'])->name('committee.delete');
         Route::delete('/documents/{id}',                [DocumentController::class, 'delete'])->name('documents.delete');
         Route::delete('/blotter/{id}',                  [BlotterController::class, 'delete'])->name('blotter.delete');
         Route::delete('/blotter/attachment/{id}',       [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');

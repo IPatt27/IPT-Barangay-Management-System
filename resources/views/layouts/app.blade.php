@@ -384,7 +384,6 @@
       {{-- Commitee Management --}}
       <li class="nav-item"><a href="{{ route('committee.index') }}"  class="{{ request()->routeIs('committee.*')  ? 'active' : '' }}">Committee Management</a>
     <div class="nav-dropdown">
-            <a href="{{ route('committee.add') }}">Add Committee</a>
         </div>
     </li>
 
