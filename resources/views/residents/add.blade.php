@@ -90,6 +90,17 @@
             @endforeach
         </select>
     </div>
+    
+        {{-- Voter Status --}}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Voter Status</label>
+            <select name="is_voter" class="form-select">
+                <option value="0">Not Registered</option>
+                <option value="1">Registered Voter</option>
+            </select>
+        </div>
+    </div>
 </div>
 
 <div class="d-flex justify-content-end gap-2">

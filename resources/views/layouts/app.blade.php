@@ -285,6 +285,11 @@
         opacity: 0.8;
     }
 
+    #users-table{
+        opacity: 0.8;
+    }
+
+
     .btn-action-view    { background: #1a3a5c; color: #fff; border: none; }
     .btn-action-view:hover { background: #15304d; color: #fff; }
     
@@ -322,7 +327,11 @@
       <li class="nav-item">
         <a href="{{ route('residents.index') }}" class="{{ request()->routeIs('residents.*') ? 'active' : '' }}">Resident Management</a>
         <div class="nav-dropdown">
+
+            @hasanyrole('admin|secretary')
             <a href="{{ route('residents.add') }}">Add Resident</a>
+            @endhasanyrole
+            
             <a href="#">Archived Residents</a>
         </div>
       </li>
@@ -331,16 +340,18 @@
       <li class="nav-item">
         <a href="{{ route('documents.index') }}"  class="{{ request()->routeIs('documents.*')  ? 'active' : '' }}">Document Issuance</a>
         <div class="nav-dropdown">
-            <a href="{{ route('documents.create') }}">Issue Document</a>
-            <a href="{{ route('documents.index') }}">View Documents</a>
+            @hasanyrole('admin|secretary')
+            <a href="{{ route('documents.create') }}">Create Document</a>
+            @endhasanyrole
         </div>
       </li>
 
       {{-- Blotter --}}
       <li class="nav-item"><a href="{{ route('blotter.index') }}"    class="{{ request()->routeIs('blotter.*')    ? 'active' : '' }}">Blotter Management</a>
         <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            @hasanyrole('admin|secretary')
+            <a href="{{ route('blotter.create') }}">Create Blotter</a>
+            @endhasanyrole
         </div>
         </li>
         
@@ -355,15 +366,18 @@
       {{-- Business --}}
       <li class="nav-item"><a href="{{ route('business.index') }}"   class="{{ request()->routeIs('business.*')   ? 'active' : '' }}">Business Permit</a>
     <div class="nav-dropdown">
+        @hasanyrole('admin|secretary')
             <a href="{{ route('business.add') }}">Add Business</a>
+        @endhasanyrole
         </div>
     </li>
 
       {{-- Officials --}}
       <li class="nav-item"><a href="{{ route('officials.index') }}"  class="{{ request()->routeIs('officials.*')  ? 'active' : '' }}">Officials & Staff</a>
       <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            @hasanyrole('admin|secretary')
+            <a href="{{ route('officials.create') }}">Add Officials</a>
+            @endhasanyrole
         </div>
     </li>
 
@@ -376,20 +390,24 @@
 
       {{-- Reporst --}}
       <li class="nav-item"><a href="{{ route('reports.index') }}"    class="{{ request()->routeIs('reports.*')    ? 'active' : '' }}">Reports & Analytics</a>
-    <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
-        </div>
     </li>
 
       {{-- User Management --}}
-      <li class="nav-item"><a href="{{ route('users.index') }}"      class="{{ request()->routeIs('users.*')      ? 'active' : '' }}">User Management</a>
+    @role('admin')
+    <li class="nav-item"><a href="{{ route('users.index') }}"      class="{{ request()->routeIs('users.*')      ? 'active' : '' }}">User Management</a>
     <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            <a href="{{ route('users.index') }}">Change Roles</a>
         </div>
     </li>
-    
+    @endrole
+
+    {{-- Payments --}}
+      <li class="nav-item">
+        <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}">Payments</a>
+        <div class="nav-dropdown">
+        </div>
+      </li>
+
     </ul>
 
     <div class="settings-menu">

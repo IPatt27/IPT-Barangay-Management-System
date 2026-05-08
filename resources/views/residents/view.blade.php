@@ -1,12 +1,14 @@
-@extends('residents.form')
+@extends('layouts.app')
 
-@section('form-title')
-    View Resident
-@endsection
+@section('content')
 
-@section('form-content')
+<h4 class="mb-4">View Resident</h4>
 
-    {{-- Row 1: First Name and Last Name --}}
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card shadow-sm">
+<div class="card-body">
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="form-label">First Name</label>
@@ -18,7 +20,6 @@
         </div>
     </div>
 
-    {{-- Row 2: Age and Sex --}}
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="form-label">Age</label>
@@ -30,7 +31,6 @@
         </div>
     </div>
 
-    {{-- Row 3: Birthdate and Civil Status --}}
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="form-label">Birthdate</label>
@@ -42,15 +42,11 @@
         </div>
     </div>
 
-    {{-- Row 4: Address --}}
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <label class="form-label">Address</label>
-            <input type="text" class="form-control" value="{{ $resident->address }}" disabled>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input type="text" class="form-control" value="{{ $resident->address }}" disabled>
     </div>
 
-    {{-- Row 5: Contact Number and Status --}}
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="form-label">Contact Number</label>
@@ -62,7 +58,6 @@
         </div>
     </div>
 
-    {{-- Row 6: Purok and Household --}}
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="form-label">Purok</label>
@@ -74,10 +69,18 @@
         </div>
     </div>
 
-    {{-- Buttons --}}
-    <div class="form-buttons">
+    <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('residents.index') }}" class="btn btn-primary">Back</a>
+
+        @hasanyrole('admin|secretary')
         <a href="{{ route('residents.edit', $resident->id) }}" class="btn btn-success">Edit</a>
+        @endhasanyrole
+        
     </div>
+
+</div>
+</div>
+</div>
+</div>
 
 @endsection

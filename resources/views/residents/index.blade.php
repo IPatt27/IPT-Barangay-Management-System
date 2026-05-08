@@ -7,7 +7,11 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Resident Management</h2>
-        <a href="{{ route('residents.add') }}" class="btn btn-success">+ Add New Resident</a>
+
+        @hasanyrole('admin|secretary')
+            <a href="{{ route('residents.add') }}" class="btn btn-success">+ Add New Resident</a>
+        @endhasanyrole
+        
     </div>
 
     {{-- Table --}}

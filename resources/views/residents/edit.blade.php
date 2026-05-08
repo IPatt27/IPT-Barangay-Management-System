@@ -1,101 +1,113 @@
-@extends('residents.form')
+@extends('layouts.app')
 
-@section('form-title')
-    Edit Resident
-@endsection
+@section('content')
 
-@section('form-content')
+<h4 class="mb-4">Edit Resident</h4>
+
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card shadow-sm">
+<div class="card-body">
+
     <form action="{{ route('residents.update', $resident->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+    @csrf
+    @method('PUT')
 
-        {{-- Row 1: First Name and Last Name --}}
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">First Name</label>
-                <input type="text" name="first_name" class="form-control" value="{{ $resident->first_name }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Last Name</label>
-                <input type="text" name="last_name" class="form-control" value="{{ $resident->last_name }}">
-            </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">First Name</label>
+            <input type="text" name="first_name" class="form-control" value="{{ old('first_name', $resident->first_name) }}">
         </div>
+        <div class="col-md-6">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="last_name" class="form-control" value="{{ old('last_name', $resident->last_name) }}">
+        </div>
+    </div>
 
-        {{-- Row 2: Age and Sex --}}
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Age</label>
-                <input type="number" name="age" class="form-control" value="{{ $resident->age }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Sex</label>
-                <input type="text" name="sex" class="form-control" value="{{ $resident->sex }}">
-            </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Age</label>
+            <input type="number" name="age" class="form-control" value="{{ old('age', $resident->age) }}">
         </div>
+        <div class="col-md-6">
+            <label class="form-label">Sex</label>
+            <input type="text" name="sex" class="form-control" value="{{ old('sex', $resident->sex) }}">
+        </div>
+    </div>
 
-        {{-- Row 3: Birthdate and Civil Status --}}
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Birthdate</label>
-                <input type="date" name="birthdate" class="form-control" value="{{ $resident->birthdate }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Civil Status</label>
-                <input type="text" name="civil_status" class="form-control" value="{{ $resident->civil_status }}">
-            </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Birthdate</label>
+            <input type="date" name="birthdate" class="form-control" value="{{ old('birthdate', $resident->birthdate) }}">
         </div>
+        <div class="col-md-6">
+            <label class="form-label">Civil Status</label>
+            <input type="text" name="civil_status" class="form-control" value="{{ old('civil_status', $resident->civil_status) }}">
+        </div>
+    </div>
 
-        {{-- Row 4: Address --}}
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <label class="form-label">Address</label>
-                <input type="text" name="address" class="form-control" value="{{ $resident->address }}">
-            </div>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input type="text" name="address" class="form-control" value="{{ old('address', $resident->address) }}">
+    </div>
 
-        {{-- Row 5: Contact Number and Status --}}
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Contact Number</label>
-                <input type="text" name="contact_number" class="form-control" value="{{ $resident->contact_number }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Status</label>
-                <input type="text" name="status" class="form-control" value="{{ $resident->status }}">
-            </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Contact Number</label>
+            <input type="text" name="contact_number" class="form-control" value="{{ old('contact_number', $resident->contact_number) }}">
         </div>
+        <div class="col-md-6">
+            <label class="form-label">Status</label>
+            <input type="text" name="status" class="form-control" value="{{ old('status', $resident->status) }}">
+        </div>
+    </div>
 
-        {{-- Row 6: Purok and Household --}}
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Purok</label>
-                <select name="purok_id" class="form-control">
-                    <option value="">Select Purok</option>
-                    @foreach($puroks as $purok)
-                        <option value="{{ $purok->id }}" {{ $resident->purok_id == $purok->id ? 'selected' : '' }}>
-                            {{ $purok->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Household</label>
-                <select name="household_id" class="form-control">
-                    <option value="">Select Household</option>
-                    @foreach($households as $household)
-                        <option value="{{ $household->id }}" {{ $resident->household_id == $household->id ? 'selected' : '' }}>
-                            {{ $household->household_code }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Purok</label>
+            <select name="purok_id" class="form-select">
+                <option value="">Select Purok</option>
+                @foreach($puroks as $purok)
+                    <option value="{{ $purok->id }}" {{ old('purok_id', $resident->purok_id) == $purok->id ? 'selected' : '' }}>
+                        {{ $purok->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
+        <div class="col-md-6">
+            <label class="form-label">Household</label>
+            <select name="household_id" class="form-select">
+                <option value="">Select Household</option>
+                @foreach($households as $household)
+                    <option value="{{ $household->id }}" {{ old('household_id', $resident->household_id) == $household->id ? 'selected' : '' }}>
+                        {{ $household->household_code }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    
+        {{-- Voter Status --}}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Voter Status</label>
+            <select name="is_voter" class="form-select">
+                <option value="0" {{ old('is_voter', $resident->is_voter) == 0 ? 'selected' : '' }}>Not Registered</option>
+                <option value="1" {{ old('is_voter', $resident->is_voter) == 1 ? 'selected' : '' }}>Registered Voter</option>
+            </select>
+        </div>
+    </div>
 
-        {{-- Buttons --}}
-        <div class="form-buttons">
-            <a href="{{ route('residents.index') }}" class="btn btn-danger">Cancel</a>
-            <button type="submit" class="btn btn-success">Update</button>
-        </div>
+    <div class="d-flex justify-content-end gap-2">
+        <a href="{{ route('residents.index', $resident->id) }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </div>
 
     </form>
+
+</div>
+</div>
+</div>
+</div>
+
 @endsection

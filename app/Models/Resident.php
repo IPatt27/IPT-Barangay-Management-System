@@ -18,6 +18,7 @@ class Resident extends Model
         'address',
         'contact_number',
         'status',
+        'is_voter',
         'purok_id',
         'household_id'
     ];

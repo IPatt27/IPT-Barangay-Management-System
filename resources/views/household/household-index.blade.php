@@ -9,7 +9,11 @@
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Household Management</h2>
+
+        @hasanyrole('admin|secretary')
         <a href="{{ route('household.add') }}" class="btn btn-success">+ Add New Household</a>
+        @endhasanyrole
+        
     </div>
 
     {{-- Table --}}

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Household;
 use App\Models\Purok;
+use Illuminate\Support\Facades\Auth;
 
 class HouseholdController extends Controller
 {
@@ -60,19 +61,28 @@ class HouseholdController extends Controller
     {
         $households = Household::with('purok');
         return DataTables::of($households)
+
             ->addColumn('purok_name', function($household) {
-                return $household->purok->name ?? 'N/A';
+                return $household->purok->name ?? 'N/A'; // ← actual purok name
             })
+            
             ->addColumn('action', function($household) {
-                return '
-                    <a href="' . route('household.view', $household->id) . '" class="btn btn-sm btn-primary">View</a>
-                    <a href="' . route('household.edit', $household->id) . '" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="' . route('household.delete', $household->id) . '" method="POST" style="display:inline;">
-                        ' . csrf_field() . '
-                        ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                ';
+                    $buttons = '<a href="' . route('household.view', $household->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
+
+                    if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
+                        $buttons .= '<a href="' . route('household.edit', $household->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
+                    }
+
+                    if (Auth::user()->hasRole('admin')) {
+                        $buttons .= '
+                            <form action="' . route('household.delete', $household->id) . '" method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                            </form>
+                        ';
+                    }
+                return $buttons;
             })
             ->rawColumns(['action'])
             ->make(true);

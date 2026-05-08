@@ -9,7 +9,11 @@
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Purok Management</h2>
+
+        @hasanyrole('admin|secretary')
         <a href="{{ route('purok.add') }}" class="btn btn-success">+ Add New Purok</a>
+        @endhasanyrole
+        
     </div>
 
     {{-- Table --}}
