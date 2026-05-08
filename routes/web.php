@@ -14,17 +14,18 @@ use App\Http\Controllers\BlotterController;
 use App\Http\Controllers\OfficialController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', fn() => redirect()->route('login'));
 
 Route::middleware(['auth'])->group(function () {
 
     // PROFILE ROUTES
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile',                      [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile',                    [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile',                   [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', [BarangayController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard',                    [DashboardController::class, 'dashboard'])->name('dashboard');
 
     // ── ALL ROLES CAN VIEW ──
     Route::get('/residents',                    [ResidentController::class, 'residents'])->name('residents.index');
