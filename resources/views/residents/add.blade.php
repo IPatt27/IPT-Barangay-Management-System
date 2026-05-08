@@ -8,7 +8,6 @@
 
 <div class="row justify-content-center">
 <div class="col-lg-8">
-
 <div class="card shadow-sm">
 <div class="card-body">
 
@@ -80,7 +79,6 @@
             @endforeach
         </select>
     </div>
-
     <div class="col-md-6">
         <label class="form-label">Household</label>
         <select name="household_id" class="form-select">
@@ -90,16 +88,16 @@
             @endforeach
         </select>
     </div>
-    
-        {{-- Voter Status --}}
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label class="form-label">Voter Status</label>
-            <select name="is_voter" class="form-select">
-                <option value="0">Not Registered</option>
-                <option value="1">Registered Voter</option>
-            </select>
-        </div>
+</div>
+
+{{-- Voter Status --}}
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label class="form-label">Voter Status</label>
+        <select name="is_voter" class="form-select">
+            <option value="0">Not Registered</option>
+            <option value="1">Registered Voter</option>
+        </select>
     </div>
 </div>
 

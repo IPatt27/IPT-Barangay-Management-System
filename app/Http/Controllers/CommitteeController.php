@@ -10,14 +10,14 @@ class CommitteeController extends Controller
 {
     // Hardcoded 8 committees
     private $committees = [
-        'peace-and-order'  => ['name' => 'Committee on Peace and Order',   'chair' => 'Kap Robert'],
-        'health'           => ['name' => 'Committee on Health',             'chair' => 'Kgd Doc Twinkle'],
-        'education'        => ['name' => 'Committee on Education',          'chair' => 'Kgd Fred Sicat'],
-        'infrastructure'   => ['name' => 'Committee on Infrastructure',     'chair' => 'Kgd Euler'],
-        'environment'      => ['name' => 'Committee on Environment',        'chair' => 'Kgd Medel'],
-        'livelihood'       => ['name' => 'Committee on Livelihood',         'chair' => 'Kgd Fred'],
-        'transport'        => ['name' => 'Committee on Transport and Communication', 'chair' => 'Kgd Bem'],
-        'bdrrm'            => ['name' => 'Committee on BDRRM',              'chair' => 'Kgd Joel'],
+        'peace-and-order'  => ['name' => 'Committee on Peace and Order',   'chair' => 'Kap Robert', 'icon' => 'fa-shield-halved'],
+        'health'           => ['name' => 'Committee on Health',             'chair' => 'Kgd Doc Twinkle', 'icon' => 'fa-heart-pulse'],
+        'education'        => ['name' => 'Committee on Education',          'chair' => 'Kgd Fred Sicat', 'icon' => 'fa-graduation-cap'],
+        'infrastructure'   => ['name' => 'Committee on Infrastructure',     'chair' => 'Kgd Euler', 'icon' => 'fa-hard-hat'],
+        'environment'      => ['name' => 'Committee on Environment',        'chair' => 'Kgd Medel', 'icon' => 'fa-tree'],
+        'livelihood'       => ['name' => 'Committee on Livelihood',         'chair' => 'Kgd Fred', 'icon' => 'fa-briefcase'],
+        'transport'        => ['name' => 'Committee on Transport and Communication', 'chair' => 'Kgd Bem', 'icon' => 'fa-truck'],
+        'bdrrm'            => ['name' => 'Committee on BDRRM',              'chair' => 'Kgd Joel', 'icon' => 'fa-triangle-exclamation'],
     ];
 
     public function index()
