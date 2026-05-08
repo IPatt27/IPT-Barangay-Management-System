@@ -332,7 +332,6 @@
             <a href="{{ route('residents.add') }}">Add Resident</a>
             @endhasanyrole
             
-            <a href="#">Archived Residents</a>
         </div>
       </li>
 
