@@ -19,11 +19,14 @@
         </h2>
     </div>
     <div class="d-flex gap-2">
+        {{-- View Digital ID button --}}
         <a href="{{ route('officials.id', $official->id) }}" target="_blank"
-           class="btn btn-info btn-sm text-white">
+        class="btn btn-sm btn-action-id">
             <i class="fa fa-id-card me-1"></i> View Digital ID
         </a>
-        <a href="{{ route('officials.edit', $official->id) }}" class="btn btn-warning btn-sm">
+
+        {{-- Edit button --}}
+        <a href="{{ route('officials.edit', $official->id) }}" class="btn btn-sm btn-action-edit">
             <i class="fa fa-edit me-1"></i> Edit
         </a>
     </div>
@@ -129,7 +132,7 @@
             <form action="{{ route('officials.delete', $official->id) }}" method="POST"
                   onsubmit="return confirm('Remove this official?')">
                 @csrf @method('DELETE')
-                <button class="btn btn-outline-danger btn-sm">
+                <button class="btn btn-sm btn-action-delete">
                     <i class="fa fa-trash me-1"></i> Delete Official
                 </button>
             </form>

@@ -145,7 +145,7 @@ class OfficialController extends Controller
                     <form action="' . route('officials.delete', $o->id) . '" method="POST" style="display:inline;"
                           onsubmit="return confirm(\'Remove this official?\')">
                         ' . csrf_field() . method_field('DELETE') . '
-                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
                     </form>
                 ';
             })

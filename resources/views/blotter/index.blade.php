@@ -12,7 +12,7 @@
         <i class="fa fa-plus me-1"></i> Record New Blotter
     </a>
 </div>
-
+{{-- Success message --}}
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show">
         {{ session('success') }}
@@ -20,24 +20,22 @@
     </div>
 @endif
 
-<div class="card shadow-sm border-0">
-    <div class="card-body">
-        <table id="blotterTable" class="table table-hover align-middle w-100">
-            <thead class="table-light">
-                <tr>
-                    <th>Case No.</th>
-                    <th>Incident Type</th>
-                    <th>Complainant(s)</th>
-                    <th>Respondent(s)</th>
-                    <th>Date of Incident</th>
-                    <th>Status</th>
-                    <th>Recorded By</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
+{{-- Table --}}
+<table id="blotterTable" class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Case No.</th>
+            <th>Incident Type</th>
+            <th>Complainant(s)</th>
+            <th>Respondent(s)</th>
+            <th>Date of Incident</th>
+            <th>Status</th>
+            <th>Recorded By</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+</table>
+    
 
 @endsection
 

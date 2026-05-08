@@ -331,8 +331,8 @@
       <li class="nav-item">
         <a href="{{ route('documents.index') }}"  class="{{ request()->routeIs('documents.*')  ? 'active' : '' }}">Document Issuance</a>
         <div class="nav-dropdown">
-            <a href="#">Add Resident</a>
-            <a href="#">View Residents</a>
+            <a href="{{ route('documents.create') }}">Issue Document</a>
+            <a href="{{ route('documents.index') }}">View Documents</a>
         </div>
       </li>
 
