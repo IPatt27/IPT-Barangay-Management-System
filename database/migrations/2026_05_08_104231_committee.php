@@ -6,20 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('committees', function (Blueprint $table) {
+        Schema::create('committee_records', function (Blueprint $table) {
             $table->id();
-            $table->string('committee_name');
-            $table->string('chairperson');
+            $table->string('committee_slug');
+            $table->string('type');
+            $table->string('title');
+            $table->string('file_path')->nullable();
             $table->text('description')->nullable();
-            $table->string('status'); // Active, Inactive
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('committees');
+        Schema::dropIfExists('committee_records');
     }
 };
+

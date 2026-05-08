@@ -1,53 +1,29 @@
 @extends('layouts.app')
 
-@section('styles')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <style>
-        #committee-table { opacity: 0.8; }
-    </style>
-@endsection
-
 @section('content')
+<div class="container-fluid p-4">
+    <h2 class="mb-4 fw-bold">Committee Management</h2>
 
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Committee Management</h2>
-        <a href="{{ route('committee.add') }}" class="btn btn-success">+ Add Committee</a>
+    <div class="row g-3">
+        @foreach($committees as $slug => $committee)
+        <div class="col-md-3">
+            <a href="{{ route('committee.view', $slug) }}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0" style="border-radius: 12px; transition: transform 0.2s;" 
+                     onmouseover="this.style.transform='translateY(-4px)'" 
+                     onmouseout="this.style.transform='translateY(0)'">
+                    <div class="card-body text-center p-4"
+                    >
+                        <div class="mb-3">
+                            <i class="fa-solid {{ $committee['icon'] }}" style="font-size: 40px; color: #1a3a5c;"></i>
+                        </div>
+                        
+                        <h5 class="fw-bold text-dark">{{ $committee['name'] }}</h5>
+                        <p class="text-muted small mb-0">{{ $committee['chair'] }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        @endforeach
     </div>
-
-    {{-- Table --}}
-    <table id="committee-table" class="table table-bordered table-striped">
-        <thead class="table-light">
-            <tr>
-                <th>ID</th>
-                <th>Committee Name</th>
-                <th>Chairperson</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
-
-@endsection
-
-@section('scripts')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#committee-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('committee.data') }}",
-                columns: [
-                    { data: 'id',             name: 'id' },
-                    { data: 'committee_name', name: 'committee_name' },
-                    { data: 'chairperson',    name: 'chairperson' },
-                    { data: 'status',         name: 'status' },
-                    { data: 'action',         name: 'action', orderable: false, searchable: false }
-                ]
-            });
-        });
-    </script>
+</div>
 @endsection

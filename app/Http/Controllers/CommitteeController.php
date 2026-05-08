@@ -3,70 +3,74 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\Committee;
+use Illuminate\Support\Facades\Storage;
+
 class CommitteeController extends Controller
 {
-        // ****COMMITTEE METHODS START****
-    public function committee()
+    // Hardcoded 8 committees
+    private $committees = [
+        'peace-and-order'  => ['name' => 'Committee on Peace and Order',   'chair' => 'Kap Robert', 'icon' => 'fa-shield-halved'],
+        'health'           => ['name' => 'Committee on Health',             'chair' => 'Kgd Doc Twinkle', 'icon' => 'fa-heart-pulse'],
+        'education'        => ['name' => 'Committee on Education',          'chair' => 'Kgd Fred Sicat', 'icon' => 'fa-graduation-cap'],
+        'infrastructure'   => ['name' => 'Committee on Infrastructure',     'chair' => 'Kgd Euler', 'icon' => 'fa-hard-hat'],
+        'environment'      => ['name' => 'Committee on Environment',        'chair' => 'Kgd Medel', 'icon' => 'fa-tree'],
+        'livelihood'       => ['name' => 'Committee on Livelihood',         'chair' => 'Kgd Fred', 'icon' => 'fa-briefcase'],
+        'transport'        => ['name' => 'Committee on Transport and Communication', 'chair' => 'Kgd Bem', 'icon' => 'fa-truck'],
+        'bdrrm'            => ['name' => 'Committee on BDRRM',              'chair' => 'Kgd Joel', 'icon' => 'fa-triangle-exclamation'],
+    ];
+
+    public function index()
     {
-        return view('committee.index');
+        return view('committee.index', ['committees' => $this->committees]);
     }
 
-    public function committeeAdd()
+    public function show($slug)
     {
-        return view('committee.add');
+        if (!array_key_exists($slug, $this->committees)) {
+            abort(404);
+        }
+
+        $committee = $this->committees[$slug];
+        $records = Committee::where('committee_slug', $slug)->get()->groupBy('type');
+
+        return view('committee.view', compact('slug', 'committee', 'records'));
     }
 
-    public function committeeView($id)
+    public function upload(Request $request, $slug)
     {
-        $committee = Committee::findOrFail($id);
-        return view('committee.view', compact('committee'));
+        $path = $request->file('file')->store('committee/' . $slug, 'public');
+
+        Committee::create([
+            'committee_slug' => $slug,
+            'type'           => $request->type,
+            'title'          => $request->title,
+            'file_path'      => $path,
+            'description'    => $request->description,
+        ]);
+
+        return redirect()->back()->with('success', 'Uploaded successfully!');
+    }
+        public function deleteRecord($slug, $id)
+    {
+        $record = Committee::findOrFail($id);
+        Storage::disk('public')->delete($record->file_path);
+        $record->delete();
+        return redirect()->back()->with('success', 'Deleted successfully!');
     }
 
-    public function committeeEdit($id)
+    public function updateRecord(Request $request, $slug, $id)
     {
-        $committee = Committee::findOrFail($id);
-        return view('committee.edit', compact('committee'));
-    }
+        $record = Committee::findOrFail($id);
+        $record->title       = $request->title;
+        $record->description = $request->description;
 
-    public function committeeStore(Request $request)
-    {
-        Committee::create($request->all());
-        return redirect()->route('committee.index');
-    }
+        if ($request->hasFile('file')) {
+            Storage::disk('public')->delete($record->file_path);
+            $record->file_path = $request->file('file')->store('committee/' . $slug, 'public');
+        }
 
-    public function committeeUpdate(Request $request, $id)
-    {
-        $committee = Committee::findOrFail($id);
-        $committee->update($request->all());
-        return redirect()->route('committee.index');
+        $record->save();
+        return redirect()->back()->with('success', 'Updated successfully!');
     }
-
-    public function committeeDelete($id)
-    {
-        $committee = Committee::findOrFail($id);
-        $committee->delete();
-        return redirect()->route('committee.index');
-    }
-
-    public function getCommittees()
-    {
-        $committees = Committee::query();
-        return DataTables::of($committees)
-            ->addColumn('action', function($committee) {
-                return '
-                    <a href="' . route('committee.view', $committee->id) . '" class="btn btn-sm btn-primary">View</a>
-                    <a href="' . route('committee.edit', $committee->id) . '" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="' . route('committee.delete', $committee->id) . '" method="POST" style="display:inline;">
-                        ' . csrf_field() . '
-                        ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                ';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
-    // ****COMMITTEE METHODS END****
 }
