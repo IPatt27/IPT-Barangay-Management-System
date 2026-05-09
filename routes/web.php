@@ -62,7 +62,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/officials/{id}/id-card',       [OfficialController::class, 'idCard'])->name('officials.id');
 
     Route::get('/payments',                     [PaymentController::class, 'paymentDashboard'])->name('payments.index');
-    Route::post('/payments/store',              [PaymentController::class, 'paymentStore'])->name('payments.store');
+    Route::get('/payments/data',                [PaymentController::class, 'getData'])->name('payments.data');
+    Route::get('/payments/{id}/receipt',        [PaymentController::class, 'receipt'])->name('payments.receipt');
 
     Route::get('/reports',                      [ReportController::class, 'reports'])->name('reports.index');
     Route::get('/reports/data',                 [ReportController::class, 'getReportsData'])->name('reports.data');
@@ -106,6 +107,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/officials',               [OfficialController::class, 'store'])->name('officials.store');
         Route::get('/officials/{id}/edit',      [OfficialController::class, 'edit'])->name('officials.edit');
         Route::put('/officials/{id}',           [OfficialController::class, 'update'])->name('officials.update');
+
+        Route::post('/payments',                 [PaymentController::class, 'store'])->name('payments.store');
     });
 
     // ── ADMIN ONLY (delete and user management) ──
@@ -122,6 +125,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/data',                       [UserController::class, 'getUsers'])->name('users.data');
         Route::get('/users/{id}/edit',                  [UserController::class, 'usersEdit'])->name('users.edit');
         Route::put('/users/{id}/update',                 [UserController::class, 'usersUpdate'])->name('users.update');
+        Route::delete('/payments/{id}',      [PaymentController::class, 'delete'])->name('payments.delete');
     });
 
 });

@@ -6,24 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resident_id')->constrained()->onDelete('cascade');
-            $table->string('type'); // e.g., Barangay Clearance, Indigency
-            $table->decimal('amount', 8, 2);
+            $table->morphs('payable'); // payable_type + payable_id
+            $table->string('or_number')->nullable();
+            $table->decimal('amount', 10, 2);
             $table->string('status')->default('Paid');
+            $table->text('notes')->nullable();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('payments');

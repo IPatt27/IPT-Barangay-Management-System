@@ -7,15 +7,13 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Document Issuance</h2>
+        <h2 style="font-size:28px; font-weight:700; color:#1a1a1a;">Document Issuance</h2>
 
         @hasanyrole('admin|secretary')
         <a href="{{ route('documents.create') }}" class="btn btn-success">+ Issue New Document</a>
         @endhasanyrole
-        
     </div>
 
-    {{-- Success message --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -23,7 +21,6 @@
         </div>
     @endif
 
-    {{-- Table --}}
     <table id="documents-table" class="table table-bordered table-striped">
         <thead class="table-light">
             <tr>
@@ -65,5 +62,59 @@
                 ]
             });
         });
+
+        function openPayModal(btn) {
+            document.getElementById('payableType').value = btn.dataset.type;
+            document.getElementById('payableId').value   = btn.dataset.id;
+            document.getElementById('payName').value     = btn.dataset.name;
+            document.getElementById('payDocType').value  = btn.dataset.doctype;
+        }
     </script>
 @endsection
+
+{{-- Pay Modal --}}
+<div class="modal fade" id="payModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Record Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('payments.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="payable_type" id="payableType">
+                <input type="hidden" name="payable_id"   id="payableId">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Name</label>
+                        <input type="text" id="payName" class="form-control" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Type</label>
+                        <input type="text" id="payDocType" class="form-control" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">OR Number</label>
+                        <input type="text" name="or_number" class="form-control" placeholder="e.g. OR-2026-001">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Amount (₱) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">₱</span>
+                            <input type="number" name="amount" class="form-control"
+                                   placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label fw-semibold">Notes <span class="text-muted fw-normal">(optional)</span></label>
+                        <textarea name="notes" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save me-1"></i> Save Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

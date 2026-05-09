@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 
 class BusinessController extends Controller
 {
-        // ****BUSINESS METHODS START****
     public function business()
     {
         return view('business.index');
@@ -56,32 +55,44 @@ class BusinessController extends Controller
         return redirect()->route('business.index');
     }
 
-public function getBusinesses()
-{
-    $businesses = Business::query();
-    return DataTables::of($businesses)
-        ->addColumn('action', function($business) {
+    public function getBusinesses()
+    {
+        $businesses = Business::query();
+        return DataTables::of($businesses)
+            ->addColumn('action', function ($business) {
 
-            $buttons = '<a href="' . route('business.view', $business->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
+                $buttons = '<a href="' . route('business.view', $business->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
 
-            if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
-                $buttons .= '<a href="' . route('business.edit', $business->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
-            }
+                if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
+                    $buttons .= '<a href="' . route('business.edit', $business->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
 
-            if (Auth::user()->hasRole('admin')) {
-                $buttons .= '
-                    <form action="' . route('business.delete', $business->id) . '" method="POST" style="display:inline;">
-                        ' . csrf_field() . '
-                        ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                    </form>
-                ';
-            }
+                    if ($business->status !== 'Paid') {
+                        $buttons .= '<button class="btn btn-sm btn-success"
+                            data-bs-toggle="modal"
+                            data-bs-target="#payModal"
+                            data-id="' . $business->id . '"
+                            data-type="business"
+                            data-name="' . $business->owner_name . '"
+                            data-doctype="' . $business->business_type . ' Permit"
+                            onclick="openPayModal(this)">
+                            <i class="fa fa-money-bill"></i> Pay
+                        </button> ';
+                    }
+                }
 
-            return $buttons;
-        })
-        ->rawColumns(['action'])
-        ->make(true);
-}
-    // ****BUSINESS METHODS END****
+                if (Auth::user()->hasRole('admin')) {
+                    $buttons .= '
+                        <form action="' . route('business.delete', $business->id) . '" method="POST" style="display:inline;">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                        </form>
+                    ';
+                }
+
+                return $buttons;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
 }

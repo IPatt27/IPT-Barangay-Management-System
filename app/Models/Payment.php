@@ -6,9 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    protected $fillable = ['resident_id', 'type', 'amount', 'status'];
+    protected $fillable = [
+        'payable_type',
+        'payable_id',
+        'or_number',
+        'amount',
+        'status',
+        'notes',
+        'paid_at',
+    ];
 
-    public function resident() {
-        return $this->belongsTo(Resident::class);
+    protected $casts = [
+        'paid_at' => 'datetime',
+    ];
+
+    public function payable()
+    {
+        return $this->morphTo();
     }
 }
