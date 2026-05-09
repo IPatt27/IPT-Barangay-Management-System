@@ -9,6 +9,7 @@ use App\Models\BlotterAttachment;
 use App\Models\Resident;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class BlotterController extends Controller
 {
@@ -185,22 +186,31 @@ class BlotterController extends Controller
                 return '<span class="badge bg-' . $color . '">' . $b->status . '</span>';
             })
             ->addColumn('action', function ($b) {
-                return '
-                    <a href="' . route('blotter.view', $b->id) . '" class="btn btn-sm btn-primary">
-                        <i class="fa fa-eye"></i> View
-                    </a>
-                    <a href="' . route('blotter.edit', $b->id) . '" class="btn btn-sm btn-warning">
+                $buttons = '<a href="' . route('blotter.view', $b->id) . '" class="btn btn-sm btn-primary">
+                    <i class="fa fa-eye"></i> View
+                </a> ';
+
+                if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
+                    $buttons .= '<a href="' . route('blotter.edit', $b->id) . '" class="btn btn-sm btn-warning">
                         <i class="fa fa-edit"></i> Edit
-                    </a>
-                    <a href="' . route('blotter.print', $b->id) . '" class="btn btn-sm btn-success" target="_blank">
-                        <i class="fa fa-print"></i> Print
-                    </a>
-                    <form action="' . route('blotter.delete', $b->id) . '" method="POST" style="display:inline;"
-                          onsubmit="return confirm(\'Delete this blotter entry?\')">
-                        ' . csrf_field() . method_field('DELETE') . '
-                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                    </form>
-                ';
+                    </a> ';
+                }
+
+                $buttons .= '<a href="' . route('blotter.print', $b->id) . '" class="btn btn-sm btn-success" target="_blank">
+                    <i class="fa fa-print"></i> Print
+                </a> ';
+
+                if (Auth::user()->hasRole('admin')) {
+                    $buttons .= '
+                        <form action="' . route('blotter.delete', $b->id) . '" method="POST" style="display:inline;"
+                            onsubmit="return confirm(\'Delete this blotter entry?\')">
+                            ' . csrf_field() . method_field('DELETE') . '
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                        </form>
+                    ';
+                }
+
+                return $buttons;
             })
             ->rawColumns(['status_badge', 'action'])
             ->make(true);

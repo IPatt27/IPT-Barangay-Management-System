@@ -47,12 +47,12 @@
         <span class="status-badge" style="background:{{ $sc['bg'] }}; color:{{ $sc['text'] }};">
             {{ $blotter->status }}
         </span>
-        <a href="{{ route('blotter.edit', $blotter->id) }}" class="btn btn-warning btn-sm">
-            <i class="fa fa-edit"></i> Edit
-        </a>
-        <a href="{{ route('blotter.print', $blotter->id) }}" class="btn btn-success btn-sm" target="_blank" style="background:#2d6a4f; border:none;">
-            <i class="fa fa-print"></i> Print Report
-        </a>
+
+        @hasanyrole('admin|secretary')
+        <a href="{{ route('blotter.edit', $blotter->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+        @endhasanyrole
+
+        <a href="{{ route('blotter.print', $blotter->id) }}" class="btn btn-success btn-sm" target="_blank" style="background:#2d6a4f; border:none;"><i class="fa fa-print"></i> Print Report</a>
     </div>
 </div>
 
