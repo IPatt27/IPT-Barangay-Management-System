@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Official;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class OfficialController extends Controller
 {
@@ -132,21 +133,26 @@ class OfficialController extends Controller
                 return '—';
             })
             ->addColumn('action', function ($o) {
-                return '
+                    $buttons = '<a href="' . route('officials.view', $o->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
 
-                    <a href="' . route('officials.view', $o->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a>
+                    if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
+                        $buttons .= '<a href="' . route('officials.edit', $o->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
+                    }
 
-                    <a href="' . route('officials.edit', $o->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a>
+                    $buttons .= '<a href="' . route('officials.id', $o->id) . '" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-id-card"></i> ID</a> ';
 
-                    <a href="' . route('officials.id', $o->id) . '" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-id-card"></i> ID</a>
+                    if (Auth::user()->hasRole('admin')) {
+                        $buttons .= '
+                            <form action="' . route('officials.delete', $o->id) . '" method="POST" style="display:inline;"
+                                onsubmit="return confirm(\'Remove this official?\')">
+                                ' . csrf_field() . method_field('DELETE') . '
+                                <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                            </form>
+                        ';
+                    }
 
-                    <form action="' . route('officials.delete', $o->id) . '" method="POST" style="display:inline;"
-                          onsubmit="return confirm(\'Remove this official?\')">
-                        ' . csrf_field() . method_field('DELETE') . '
-                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                    </form>
-                ';
-            })
+                    return $buttons;
+                })
             ->rawColumns(['photo_thumb', 'status_badge', 'action'])
             ->make(true);
     }

@@ -11,24 +11,21 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
     <div class="d-flex align-items-center gap-3">
-        <a href="{{ route('officials.index') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="fa fa-arrow-left"></i>
-        </a>
         <h2 style="font-size:24px; font-weight:700; color:#1a1a1a; margin:0;">
             {{ $official->full_name }}
         </h2>
     </div>
     <div class="d-flex gap-2">
         {{-- View Digital ID button --}}
-        <a href="{{ route('officials.id', $official->id) }}" target="_blank"
-        class="btn btn-sm btn-action-id">
-            <i class="fa fa-id-card me-1"></i> View Digital ID
-        </a>
+        <a href="{{ route('officials.id', $official->id) }}" target="_blank"class="btn btn-sm btn-action-id"><i class="fa fa-id-card me-1"></i> View Digital ID</a>
 
         {{-- Edit button --}}
-        <a href="{{ route('officials.edit', $official->id) }}" class="btn btn-sm btn-action-edit">
-            <i class="fa fa-edit me-1"></i> Edit
-        </a>
+        @hasanyrole('admin|secretary')
+        <a href="{{ route('officials.edit', $official->id) }}" class="btn btn-sm btn-action-edit"><i class="fa fa-edit me-1"></i> Edit</a>
+        @endhasanyrole
+
+        {{-- Back button to index --}}
+        <a href="{{ route('officials.index') }}" class="btn btn-sm btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
     </div>
 </div>
 
@@ -132,9 +129,12 @@
             <form action="{{ route('officials.delete', $official->id) }}" method="POST"
                   onsubmit="return confirm('Remove this official?')">
                 @csrf @method('DELETE')
+
+                @hasallroles('admin|secretary')
                 <button class="btn btn-sm btn-action-delete">
                     <i class="fa fa-trash me-1"></i> Delete Official
                 </button>
+                @endhasallroles
             </form>
         </div>
     </div>

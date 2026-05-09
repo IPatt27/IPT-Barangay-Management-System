@@ -116,11 +116,9 @@
     </div>
 
     <div class="d-flex justify-content-end gap-2">
-        <a href="{{ route('officials.view', $official->id) }}" class="btn btn-outline-secondary">Cancel</a>
-        <button type="submit" class="btn btn-success" style="background:#2d6a4f; border:none; font-weight:600;">
-            <i class="fa fa-save me-1"></i> Save Changes
-        </button>
-    </div>
+        <a href="{{ route('officials.view', $official->id) }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </div>  
 
 </form>
 </div>

@@ -10,7 +10,7 @@ class CommitteeController extends Controller
 {
     // Hardcoded 8 committees
     private $committees = [
-        'peace-and-order'  => ['name' => 'Committee on Peace and Order',   'chair' => 'Kap Robert', 'icon' => 'fa-shield-halved'],
+        'peace-and-order'  => ['name' => 'Committee on Peace and Order',   'chair' => 'Kap Mikha Lim', 'icon' => 'fa-shield-halved'],
         'health'           => ['name' => 'Committee on Health',             'chair' => 'Kgd Doc Twinkle', 'icon' => 'fa-heart-pulse'],
         'education'        => ['name' => 'Committee on Education',          'chair' => 'Kgd Fred Sicat', 'icon' => 'fa-graduation-cap'],
         'infrastructure'   => ['name' => 'Committee on Infrastructure',     'chair' => 'Kgd Euler', 'icon' => 'fa-hard-hat'],

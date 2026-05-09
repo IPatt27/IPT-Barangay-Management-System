@@ -30,11 +30,9 @@
         <div class="tab-pane fade show active" id="photos">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5>Photos</h5>
-
                 @hasanyrole('admin|secretary')
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#uploadModal" onclick="setType('photo')">+ Upload Photo</button>
                 @endhasanyrole
-
             </div>
             <div class="row g-3">
                 @forelse($records->get('photo', collect()) as $photo)
@@ -42,14 +40,15 @@
                     <div class="card border-0 shadow-sm">
                         <img src="{{ asset('storage/' . $photo->file_path) }}"
                              class="card-img-top"
-                             style="height: 220px; object-fit: contain; background: #f8f8f8;">
+                             style="height: 220px; object-fit: contain; background: #f8f8f8; cursor: pointer;"
+                             data-image="{{ asset('storage/' . $photo->file_path) }}"
+                             data-title="{{ $photo->title }}"
+                             onclick="openLightbox(this)">
                         <div class="card-body p-2">
                             <p class="small mb-0 fw-bold">{{ $photo->title }}</p>
                             <p class="small text-muted mb-0">{{ $photo->description }}</p>
-                            
 
                             <div class="d-flex gap-2 mt-2">
-
                                 @hasanyrole('admin|secretary')
                                 <button class="btn btn-sm btn-action-edit btn-warning w-50"
                                     data-id="{{ $photo->id }}"
@@ -59,9 +58,6 @@
                                     onclick="openEdit(this)">
                                     <i class="fa-solid fa-pen-to-square"></i> Edit
                                 </button>
-                                
-                                <!-- //both inside the hasanyrole, pinagisa ko nalang -->
-
                                 <form action="{{ route('committee.record.delete', [$slug, $photo->id]) }}" method="POST" class="w-50">
                                     @csrf
                                     @method('DELETE')
@@ -71,7 +67,6 @@
                                     </button>
                                 </form>
                                 @endhasanyrole
-
                             </div>
                         </div>
                     </div>
@@ -163,6 +158,21 @@
     </div>
 </div>
 
+{{-- Lightbox Modal --}}
+<div class="modal fade" id="lightboxModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-light border-0">
+            <div class="modal-header border-0 pb-0">
+                <h6 class="modal-title text-dark" id="lightboxTitle"></h6>
+                <button type="button" class="btn-close btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-3">
+                <img id="lightboxImage" src="" class="img-fluid rounded" style="max-height: 70vh; object-fit: contain;">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function setType(type) {
         document.getElementById('uploadType').value = type;
@@ -180,6 +190,12 @@
         document.getElementById('editForm').action       = `/committee/{{ $slug }}/records/${id}`;
 
         new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+
+    function openLightbox(img) {
+        document.getElementById('lightboxImage').src         = img.dataset.image;
+        document.getElementById('lightboxTitle').textContent = img.dataset.title;
+        new bootstrap.Modal(document.getElementById('lightboxModal')).show();
     }
 </script>
 @endsection

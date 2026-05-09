@@ -288,6 +288,9 @@
     #users-table{
         opacity: 0.8;
     }
+    #officialsTable{
+        opacity: 0.8;
+    }
 
 
     .btn-action-view    { background: #1a3a5c; color: #fff; border: none; }

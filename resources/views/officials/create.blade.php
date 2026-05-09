@@ -3,11 +3,9 @@
 @section('content')
 
 <div class="d-flex align-items-center gap-3 mb-4">
-    <a href="{{ route('officials.index') }}" class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-arrow-left"></i>
-    </a>
     <h2 style="font-size:28px; font-weight:700; color:#1a1a1a; margin:0;">Add New Official</h2>
 </div>
+
 
 <div class="row justify-content-center">
 <div class="col-lg-9">
@@ -107,9 +105,17 @@
 
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Designation / Committee</label>
-                    <input type="text" name="designation" class="form-control"
-                           placeholder="e.g. Committee on Health, Peace and Order"
-                           value="{{ old('designation') }}">
+                    <select name="designation" class="form-select">
+                        <option value="">— Select designation —</option>
+                        <option value="Peace and Order"    {{ old('designation') == 'Peace and Order'    ? 'selected' : '' }}>Peace and Order</option>
+                        <option value="Health"             {{ old('designation') == 'Health'             ? 'selected' : '' }}>Health</option>
+                        <option value="Education"          {{ old('designation') == 'Education'          ? 'selected' : '' }}>Education</option>
+                        <option value="Infrastructure"     {{ old('designation') == 'Infrastructure'     ? 'selected' : '' }}>Infrastructure</option>
+                        <option value="Environment"        {{ old('designation') == 'Environment'        ? 'selected' : '' }}>Environment</option>
+                        <option value="Livelihood"         {{ old('designation') == 'Livelihood'         ? 'selected' : '' }}>Livelihood</option>
+                        <option value="Transport"          {{ old('designation') == 'Transport'          ? 'selected' : '' }}>Transport and Communication</option>
+                        <option value="BDRRM"              {{ old('designation') == 'BDRRM'              ? 'selected' : '' }}>BDRRM</option>
+                    </select>
                 </div>
 
                 <div class="col-md-4">
@@ -137,10 +143,8 @@
     </div>
 
     <div class="d-flex justify-content-end gap-2">
-        <a href="{{ route('officials.index') }}" class="btn btn-outline-secondary">Cancel</a>
-        <button type="submit" class="btn btn-success" style="background:#2d6a4f; border:none; font-weight:600;">
-            <i class="fa fa-save me-1"></i> Save Official
-        </button>
+        <a href="{{ route('officials.index') }}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-success">Save Changes</button>
     </div>
 
 </form>

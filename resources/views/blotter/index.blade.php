@@ -5,9 +5,8 @@
 @endsection
 
 @section('content')
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 style="font-size:28px; font-weight:700; color:#1a1a1a;">Blotter Management</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Blotter Management</h2>
     @hasanyrole('admin|secretary')
         <a href="{{ route('blotter.create') }}" class="btn btn-success">+ Record New Blotter</a>
     @endhasanyrole
