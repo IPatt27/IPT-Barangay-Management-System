@@ -65,8 +65,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payments/data',                [PaymentController::class, 'getData'])->name('payments.data');
     Route::get('/payments/{id}/receipt',        [PaymentController::class, 'receipt'])->name('payments.receipt');
 
-    Route::get('/reports',                      [ReportController::class, 'reports'])->name('reports.index');
-    Route::get('/reports/data',                 [ReportController::class, 'getReportsData'])->name('reports.data');
+    Route::get('/reports', [ReportController::class, 'reports'])->name('reports.index');
+    Route::get('/reports/data', [ReportController::class, 'getReportsData'])->name('reports.data');
+    Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+    Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
 
     // ── ADMIN AND SECRETARY (create and edit) ──
     Route::middleware(['role:admin|secretary'])->group(function () {
