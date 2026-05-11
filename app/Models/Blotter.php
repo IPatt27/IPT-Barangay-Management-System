@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blotter extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'case_number',
@@ -24,9 +25,16 @@ class Blotter extends Model
         'incident_date' => 'datetime',
     ];
 
+    // ── Relationships ──────────────────────────────────────────────
+
     public function parties()
     {
         return $this->hasMany(BlotterParty::class);
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(BlotterAttachment::class);
     }
 
     public function complainants()
@@ -42,10 +50,5 @@ class Blotter extends Model
     public function witnesses()
     {
         return $this->parties()->where('role', 'Witness');
-    }
-
-    public function attachments()
-    {
-        return $this->hasMany(BlotterAttachment::class);
     }
 }

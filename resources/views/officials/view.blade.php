@@ -16,16 +16,19 @@
         </h2>
     </div>
     <div class="d-flex gap-2">
-        {{-- View Digital ID button --}}
-        <a href="{{ route('officials.id', $official->id) }}" target="_blank"class="btn btn-sm btn-action-id"><i class="fa fa-id-card me-1"></i> View Digital ID</a>
+        <a href="{{ route('officials.id', $official->id) }}" target="_blank" class="btn btn-sm btn-action-id">
+            <i class="fa fa-id-card me-1"></i> View Digital ID
+        </a>
 
-        {{-- Edit button --}}
         @hasanyrole('admin|secretary')
-        <a href="{{ route('officials.edit', $official->id) }}" class="btn btn-sm btn-action-edit"><i class="fa fa-edit me-1"></i> Edit</a>
+        <a href="{{ route('officials.edit', $official->id) }}" class="btn btn-sm btn-action-edit">
+            <i class="fa fa-edit me-1"></i> Edit
+        </a>
         @endhasanyrole
 
-        {{-- Back button to index --}}
-        <a href="{{ route('officials.index') }}" class="btn btn-sm btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
+        <a href="{{ route('officials.index') }}" class="btn btn-sm btn-primary">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
     </div>
 </div>
 
@@ -125,18 +128,21 @@
             </div>
         </div>
 
+        {{--
+            Soft-delete: moves to trash, recoverable from the index via "Show Trashed".
+            Only admins can delete (matches the route middleware in web.php).
+        --}}
+        @role('admin')
         <div class="d-flex justify-content-end mt-3">
             <form action="{{ route('officials.delete', $official->id) }}" method="POST"
-                  onsubmit="return confirm('Remove this official?')">
+                  onsubmit="return confirm('Move this official to trash? They can be restored later.')">
                 @csrf @method('DELETE')
-
-                @hasallroles('admin|secretary')
                 <button class="btn btn-sm btn-action-delete">
-                    <i class="fa fa-trash me-1"></i> Delete Official
+                    <i class="fa fa-trash me-1"></i> Move to Trash
                 </button>
-                @endhasallroles
             </form>
         </div>
+        @endrole
     </div>
 </div>
 

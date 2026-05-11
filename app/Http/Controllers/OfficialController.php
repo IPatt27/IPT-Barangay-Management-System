@@ -92,28 +92,70 @@ class OfficialController extends Controller
                          ->with('success', 'Official updated successfully.');
     }
 
-    public function delete($id)
-    {
-        $official = Official::findOrFail($id);
-        if ($official->photo) {
-            Storage::disk('public')->delete($official->photo);
-        }
-        $official->delete();
-        return redirect()->route('officials.index')
-                         ->with('success', 'Official removed.');
-    }
-
     public function idCard($id)
     {
         $official = Official::findOrFail($id);
         return view('officials.id', compact('official'));
     }
 
-    public function getData()
-    {
-        $officials = Official::query();
+    // ── Soft-delete actions ────────────────────────────────────────────────────
 
-        return DataTables::of($officials)
+    /**
+     * Soft-delete: sets deleted_at only. Photo stays on disk so it can be
+     * restored later. The old hard-delete of the photo is intentionally removed.
+     */
+    public function delete($id)
+    {
+        Official::findOrFail($id)->delete();
+
+        return redirect()->route('officials.index')
+                         ->with('success', 'Official moved to trash.');
+    }
+
+    /**
+     * Restore a soft-deleted official back to active.
+     */
+    public function restore($id)
+    {
+        Official::withTrashed()->findOrFail($id)->restore();
+
+        return redirect()->route('officials.index')
+                         ->with('success', 'Official restored successfully.');
+    }
+
+    /**
+     * Permanently delete the official and remove their photo from disk.
+     * Only available for already-soft-deleted records.
+     */
+    public function forceDelete($id)
+    {
+        $official = Official::withTrashed()->findOrFail($id);
+
+        if ($official->photo) {
+            Storage::disk('public')->delete($official->photo);
+        }
+
+        $official->forceDelete();
+
+        return redirect()->route('officials.index')
+                         ->with('success', 'Official permanently deleted.');
+    }
+
+    // ── DataTables AJAX feed ───────────────────────────────────────────────────
+
+    /**
+     * Single data endpoint.
+     * Pass ?trashed=1 to get only soft-deleted rows (used by the trash toggle).
+     */
+    public function getData(Request $request)
+    {
+        $showTrashed = $request->boolean('trashed');
+
+        $query = $showTrashed
+            ? Official::onlyTrashed()
+            : Official::query();
+
+        return DataTables::of($query)
             ->addColumn('full_name', fn($o) => $o->first_name . ' ' . $o->last_name)
             ->addColumn('photo_thumb', function ($o) {
                 $src = $o->photo
@@ -132,27 +174,67 @@ class OfficialController extends Controller
                 }
                 return '—';
             })
-            ->addColumn('action', function ($o) {
-                    $buttons = '<a href="' . route('officials.view', $o->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</a> ';
+            ->addColumn('action', function ($o) use ($showTrashed) {
+                $buttons = '';
+
+                if ($showTrashed) {
+                    // ── Trashed view: Restore + Delete Forever ─────────────────
+                    if (Auth::user()->hasRole('admin')) {
+                        $buttons .= '
+                            <form action="' . route('officials.restore', $o->id) . '"
+                                  method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                <button type="submit" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-rotate-left"></i> Restore
+                                </button>
+                            </form> ';
+
+                        $buttons .= '
+                            <form action="' . route('officials.force-delete', $o->id) . '"
+                                  method="POST" style="display:inline;"
+                                  onsubmit="return confirm(\'Permanently delete ' . addslashes($o->full_name) . '? This cannot be undone.\')">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-times-circle"></i> Delete Forever
+                                </button>
+                            </form>';
+                    }
+                } else {
+                    // ── Active view: View + Edit + ID + (Soft) Delete ──────────
+                    $buttons .= '<a href="' . route('officials.view', $o->id) . '"
+                        class="btn btn-sm btn-primary">
+                        <i class="fa fa-eye"></i> View
+                    </a> ';
 
                     if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
-                        $buttons .= '<a href="' . route('officials.edit', $o->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
+                        $buttons .= '<a href="' . route('officials.edit', $o->id) . '"
+                            class="btn btn-sm btn-warning">
+                            <i class="fa fa-edit"></i> Edit
+                        </a> ';
                     }
 
-                    $buttons .= '<a href="' . route('officials.id', $o->id) . '" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-id-card"></i> ID</a> ';
+                    $buttons .= '<a href="' . route('officials.id', $o->id) . '"
+                        class="btn btn-sm btn-info" target="_blank">
+                        <i class="fa fa-id-card"></i> ID
+                    </a> ';
 
                     if (Auth::user()->hasRole('admin')) {
                         $buttons .= '
-                            <form action="' . route('officials.delete', $o->id) . '" method="POST" style="display:inline;"
-                                onsubmit="return confirm(\'Remove this official?\')">
-                                ' . csrf_field() . method_field('DELETE') . '
-                                <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                            </form>
-                        ';
+                            <form action="' . route('officials.delete', $o->id) . '"
+                                  method="POST" style="display:inline;"
+                                  onsubmit="return confirm(\'Move this official to trash?\')">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </form>';
                     }
+                }
 
-                    return $buttons;
-                })
+                return $buttons;
+            })
             ->rawColumns(['photo_thumb', 'status_badge', 'action'])
             ->make(true);
     }

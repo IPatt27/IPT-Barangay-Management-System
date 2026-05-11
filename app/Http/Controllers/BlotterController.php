@@ -39,8 +39,9 @@ class BlotterController extends Controller
             'attachments.*'        => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
         ]);
 
+        // withTrashed() ensures restored entries don't create duplicate case numbers
         $year       = now()->year;
-        $lastId     = Blotter::whereYear('created_at', $year)->count() + 1;
+        $lastId     = Blotter::withTrashed()->whereYear('created_at', $year)->count() + 1;
         $caseNumber = 'BLT-' . $year . '-' . str_pad($lastId, 6, '0', STR_PAD_LEFT);
 
         $blotter = Blotter::create([
@@ -142,13 +143,6 @@ class BlotterController extends Controller
                          ->with('success', 'Blotter entry updated successfully.');
     }
 
-    public function delete($id)
-    {
-        Blotter::findOrFail($id)->delete();
-        return redirect()->route('blotter.index')
-                         ->with('success', 'Blotter entry deleted.');
-    }
-
     public function deleteAttachment($attachmentId)
     {
         $attachment = BlotterAttachment::findOrFail($attachmentId);
@@ -157,23 +151,75 @@ class BlotterController extends Controller
         return back()->with('success', 'Attachment removed.');
     }
 
+    /**
+     * withTrashed() so admins can still reprint a soft-deleted blotter report.
+     */
     public function print($id)
     {
-        $blotter = Blotter::with(['parties', 'attachments'])->findOrFail($id);
+        $blotter = Blotter::withTrashed()->with(['parties', 'attachments'])->findOrFail($id);
         return view('blotter.print', compact('blotter'));
     }
 
-    public function getData()
-    {
-        $blotters = Blotter::query();
+    // ── Soft-delete actions ────────────────────────────────────────────────────
 
-        return DataTables::of($blotters)
-            ->addColumn('complainants', function ($b) {
-                return $b->complainants()->pluck('name')->join(', ') ?: '—';
-            })
-            ->addColumn('respondents', function ($b) {
-                return $b->respondents()->pluck('name')->join(', ') ?: '—';
-            })
+    /**
+     * Soft-delete: sets deleted_at, entry stays in the DB.
+     */
+    public function delete($id)
+    {
+        Blotter::findOrFail($id)->delete();
+
+        return redirect()->route('blotter.index')
+                         ->with('success', 'Blotter entry moved to trash.');
+    }
+
+    /**
+     * Restore a soft-deleted blotter entry back to active.
+     */
+    public function restore($id)
+    {
+        Blotter::withTrashed()->findOrFail($id)->restore();
+
+        return redirect()->route('blotter.index')
+                         ->with('success', 'Blotter entry restored successfully.');
+    }
+
+    /**
+     * Permanently delete a soft-deleted entry and all its stored files.
+     */
+    public function forceDelete($id)
+    {
+        $blotter = Blotter::withTrashed()->findOrFail($id);
+
+        foreach ($blotter->attachments as $att) {
+            Storage::disk('public')->delete($att->file_path);
+        }
+
+        $blotter->attachments()->delete();
+        $blotter->parties()->delete();
+        $blotter->forceDelete();
+
+        return redirect()->route('blotter.index')
+                         ->with('success', 'Blotter entry permanently deleted.');
+    }
+
+    // ── DataTables AJAX feed ───────────────────────────────────────────────────
+
+    /**
+     * Single data endpoint.
+     * Pass ?trashed=1 to get only soft-deleted rows (used by the trash toggle).
+     */
+    public function getData(Request $request)
+    {
+        $showTrashed = $request->boolean('trashed');
+
+        $query = $showTrashed
+            ? Blotter::onlyTrashed()
+            : Blotter::query();
+
+        return DataTables::of($query)
+            ->addColumn('complainants', fn($b) => $b->complainants()->pluck('name')->join(', ') ?: '—')
+            ->addColumn('respondents',  fn($b) => $b->respondents()->pluck('name')->join(', ')  ?: '—')
             ->addColumn('status_badge', function ($b) {
                 $colors = [
                     'Active'                       => 'danger',
@@ -185,29 +231,63 @@ class BlotterController extends Controller
                 $color = $colors[$b->status] ?? 'secondary';
                 return '<span class="badge bg-' . $color . '">' . $b->status . '</span>';
             })
-            ->addColumn('action', function ($b) {
-                $buttons = '<a href="' . route('blotter.view', $b->id) . '" class="btn btn-sm btn-primary">
-                    <i class="fa fa-eye"></i> View
-                </a> ';
+            ->addColumn('action', function ($b) use ($showTrashed) {
+                $buttons = '';
 
-                if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
-                    $buttons .= '<a href="' . route('blotter.edit', $b->id) . '" class="btn btn-sm btn-warning">
-                        <i class="fa fa-edit"></i> Edit
+                if ($showTrashed) {
+                    // ── Trashed view: Restore + Delete Forever ─────────────────
+                    if (Auth::user()->hasRole('admin')) {
+                        $buttons .= '
+                            <form action="' . route('blotter.restore', $b->id) . '"
+                                  method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                <button type="submit" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-rotate-left"></i> Restore
+                                </button>
+                            </form> ';
+
+                        $buttons .= '
+                            <form action="' . route('blotter.force-delete', $b->id) . '"
+                                  method="POST" style="display:inline;"
+                                  onsubmit="return confirm(\'Permanently delete ' . $b->case_number . '? This cannot be undone.\')">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-times-circle"></i> Delete Forever
+                                </button>
+                            </form>';
+                    }
+                } else {
+                    // ── Active view: View + Edit + Print + (Soft) Delete ───────
+                    $buttons .= '<a href="' . route('blotter.view', $b->id) . '"
+                        class="btn btn-sm btn-primary">
+                        <i class="fa fa-eye"></i> View
                     </a> ';
-                }
 
-                $buttons .= '<a href="' . route('blotter.print', $b->id) . '" class="btn btn-sm btn-success" target="_blank">
-                    <i class="fa fa-print"></i> Print
-                </a> ';
+                    if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
+                        $buttons .= '<a href="' . route('blotter.edit', $b->id) . '"
+                            class="btn btn-sm btn-warning">
+                            <i class="fa fa-edit"></i> Edit
+                        </a> ';
+                    }
 
-                if (Auth::user()->hasRole('admin')) {
-                    $buttons .= '
-                        <form action="' . route('blotter.delete', $b->id) . '" method="POST" style="display:inline;"
-                            onsubmit="return confirm(\'Delete this blotter entry?\')">
-                            ' . csrf_field() . method_field('DELETE') . '
-                            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                        </form>
-                    ';
+                    $buttons .= '<a href="' . route('blotter.print', $b->id) . '"
+                        class="btn btn-sm btn-success" target="_blank">
+                        <i class="fa fa-print"></i> Print
+                    </a> ';
+
+                    if (Auth::user()->hasRole('admin')) {
+                        $buttons .= '
+                            <form action="' . route('blotter.delete', $b->id) . '"
+                                  method="POST" style="display:inline;"
+                                  onsubmit="return confirm(\'Move this entry to trash?\')">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </form>';
+                    }
                 }
 
                 return $buttons;

@@ -124,7 +124,11 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/documents/{id}/force-delete',[DocumentController::class, 'forceDelete'])->name('documents.forceDelete');
         Route::delete('/blotter/{id}',                  [BlotterController::class, 'delete'])->name('blotter.delete');
         Route::delete('/blotter/attachment/{id}',       [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
+        Route::post  ('/blotter/{id}/restore',      [BlotterController::class, 'restore']          )->name('blotter.restore');
+        Route::delete('/blotter/{id}/force-delete', [BlotterController::class, 'forceDelete']      )->name('blotter.force-delete');
         Route::delete('/officials/{id}',                [OfficialController::class, 'delete'])->name('officials.delete');
+        Route::post('/officials/{id}/restore',          [OfficialController::class, 'restore'])->name('officials.restore');
+        Route::delete('/officials/{id}/force-delete',   [OfficialController::class, 'forceDelete'])->name('officials.force-delete');
         Route::get('/users',                            [UserController::class, 'users'])->name('users.index');
         Route::get('/users/data',                       [UserController::class, 'getUsers'])->name('users.data');
         Route::get('/users/{id}/edit',                  [UserController::class, 'usersEdit'])->name('users.edit');

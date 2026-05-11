@@ -49,10 +49,15 @@
         </span>
 
         @hasanyrole('admin|secretary')
-        <a href="{{ route('blotter.edit', $blotter->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+        <a href="{{ route('blotter.edit', $blotter->id) }}" class="btn btn-warning btn-sm">
+            <i class="fa fa-edit"></i> Edit
+        </a>
         @endhasanyrole
 
-        <a href="{{ route('blotter.print', $blotter->id) }}" class="btn btn-success btn-sm" target="_blank" style="background:#2d6a4f; border:none;"><i class="fa fa-print"></i> Print Report</a>
+        <a href="{{ route('blotter.print', $blotter->id) }}" class="btn btn-success btn-sm" target="_blank"
+           style="background:#2d6a4f; border:none;">
+            <i class="fa fa-print"></i> Print Report
+        </a>
     </div>
 </div>
 
@@ -186,15 +191,20 @@
                     <div class="info-value">{{ $blotter->updated_at->format('F d, Y h:i A') }}</div>
                 </div>
 
+                @hasanyrole('admin')
                 <hr>
-
+                {{--
+                    Soft-delete: moves to trash, recoverable from /blotter/trash.
+                    Use the trash page for permanent deletion.
+                --}}
                 <form action="{{ route('blotter.delete', $blotter->id) }}" method="POST"
-                      onsubmit="return confirm('Permanently delete this blotter entry?')">
+                      onsubmit="return confirm('Move this blotter entry to trash? It can be restored later.')">
                     @csrf @method('DELETE')
                     <button class="btn btn-outline-danger w-100 btn-sm">
-                        <i class="fa fa-trash me-1"></i> Delete Entry
+                        <i class="fa fa-trash me-1"></i> Move to Trash
                     </button>
                 </form>
+                @endhasanyrole
             </div>
         </div>
     </div>
