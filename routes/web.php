@@ -128,6 +128,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/household/{id}/force-delete',       [HouseholdController::class, 'forceDelete'])->name('household.forceDelete');
 
         Route::delete('/business/{id}',                     [BusinessController::class, 'businessDelete'])->name('business.delete');
+        Route::post('/business/{id}/restore',               [BusinessController::class, 'restore'])->name('business.restore');          
+        Route::delete('/business/{id}/force-delete',        [BusinessController::class, 'forceDelete'])->name('business.forceDelete'); 
 
         Route::delete('/documents/{id}',                    [DocumentController::class, 'delete'])->name('documents.delete');
         Route::post('/documents/{id}/restore',              [DocumentController::class, 'restore'])->name('documents.restore');
