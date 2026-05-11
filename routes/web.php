@@ -65,10 +65,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payments/data',                [PaymentController::class, 'getData'])->name('payments.data');
     Route::get('/payments/{id}/receipt',        [PaymentController::class, 'receipt'])->name('payments.receipt');
 
-    Route::get('/reports', [ReportController::class, 'reports'])->name('reports.index');
-    Route::get('/reports/data', [ReportController::class, 'getReportsData'])->name('reports.data');
-    Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
-    Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
+    Route::get('/reports',                      [ReportController::class, 'reports'])->name('reports.index');
+    Route::get('/reports/data',                 [ReportController::class, 'getReportsData'])->name('reports.data');
+    Route::get('/reports/export/pdf',           [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+    Route::get('/reports/export/excel',         [ReportController::class, 'exportExcel'])->name('reports.export.excel');
 
     // ── ADMIN AND SECRETARY (create and edit) ──
     Route::middleware(['role:admin|secretary'])->group(function () {
@@ -88,9 +88,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/household/{id}/edit',      [HouseholdController::class, 'householdEdit'])->name('household.edit');
         Route::put('/household/{id}/update',    [HouseholdController::class, 'householdUpdate'])->name('household.update');
 
-        Route::post('/committee/{slug}/upload', [CommitteeController::class, 'upload'])->name('committee.upload');
-        Route::delete('/committee/{slug}/records/{id}', [CommitteeController::class, 'deleteRecord'])->name('committee.record.delete');
-        Route::put('/committee/{slug}/records/{id}',    [CommitteeController::class, 'updateRecord'])->name('committee.record.update');
+        Route::post('/committee/{slug}/upload',             [CommitteeController::class, 'upload'])->name('committee.upload');
+        Route::delete('/committee/{slug}/records/{id}',     [CommitteeController::class, 'deleteRecord'])->name('committee.record.delete');
+        Route::put('/committee/{slug}/records/{id}',        [CommitteeController::class, 'updateRecord'])->name('committee.record.update');
 
         Route::get('/business/add',             [BusinessController::class, 'businessAdd'])->name('business.add');
         Route::post('/business',                [BusinessController::class, 'businessStore'])->name('business.store');
@@ -110,30 +110,38 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/officials/{id}/edit',      [OfficialController::class, 'edit'])->name('officials.edit');
         Route::put('/officials/{id}',           [OfficialController::class, 'update'])->name('officials.update');
 
-        Route::post('/payments',                 [PaymentController::class, 'store'])->name('payments.store');
+        Route::post('/payments',                [PaymentController::class, 'store'])->name('payments.store');
     });
 
     // ── ADMIN ONLY (delete and user management) ──
     Route::middleware(['role:admin'])->group(function () {
-        Route::delete('/residents/{id}',                [ResidentController::class, 'residentsDelete'])->name('residents.delete');
-        Route::delete('/purok/{id}',                    [PurokController::class, 'purokDelete'])->name('purok.delete');
-        Route::delete('/household/{id}',                [HouseholdController::class, 'householdDelete'])->name('household.delete');
-        Route::delete('/business/{id}',                 [BusinessController::class, 'businessDelete'])->name('business.delete');
-        Route::delete('/documents/{id}',                [DocumentController::class, 'delete'])->name('documents.delete');
-        Route::post('/documents/{id}/restore',       [DocumentController::class, 'restore'])->name('documents.restore');
-        Route::delete('/documents/{id}/force-delete',[DocumentController::class, 'forceDelete'])->name('documents.forceDelete');
-        Route::delete('/blotter/{id}',                  [BlotterController::class, 'delete'])->name('blotter.delete');
-        Route::delete('/blotter/attachment/{id}',       [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
-        Route::post  ('/blotter/{id}/restore',      [BlotterController::class, 'restore']          )->name('blotter.restore');
-        Route::delete('/blotter/{id}/force-delete', [BlotterController::class, 'forceDelete']      )->name('blotter.force-delete');
-        Route::delete('/officials/{id}',                [OfficialController::class, 'delete'])->name('officials.delete');
-        Route::post('/officials/{id}/restore',          [OfficialController::class, 'restore'])->name('officials.restore');
-        Route::delete('/officials/{id}/force-delete',   [OfficialController::class, 'forceDelete'])->name('officials.force-delete');
-        Route::get('/users',                            [UserController::class, 'users'])->name('users.index');
-        Route::get('/users/data',                       [UserController::class, 'getUsers'])->name('users.data');
-        Route::get('/users/{id}/edit',                  [UserController::class, 'usersEdit'])->name('users.edit');
-        Route::put('/users/{id}/update',                 [UserController::class, 'usersUpdate'])->name('users.update');
-        Route::delete('/payments/{id}',      [PaymentController::class, 'delete'])->name('payments.delete');
+        Route::delete('/residents/{id}',                    [ResidentController::class, 'residentsDelete'])->name('residents.delete');
+        Route::post('/residents/{id}/restore',              [ResidentController::class, 'restore'])->name('residents.restore');           // ← new
+        Route::delete('/residents/{id}/force-delete',       [ResidentController::class, 'forceDelete'])->name('residents.forceDelete');   // ← new
+
+        Route::delete('/purok/{id}',                        [PurokController::class, 'purokDelete'])->name('purok.delete');
+        Route::delete('/household/{id}',                    [HouseholdController::class, 'householdDelete'])->name('household.delete');
+        Route::delete('/business/{id}',                     [BusinessController::class, 'businessDelete'])->name('business.delete');
+
+        Route::delete('/documents/{id}',                    [DocumentController::class, 'delete'])->name('documents.delete');
+        Route::post('/documents/{id}/restore',              [DocumentController::class, 'restore'])->name('documents.restore');
+        Route::delete('/documents/{id}/force-delete',       [DocumentController::class, 'forceDelete'])->name('documents.forceDelete');
+
+        Route::delete('/blotter/{id}',                      [BlotterController::class, 'delete'])->name('blotter.delete');
+        Route::delete('/blotter/attachment/{id}',           [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
+        Route::post('/blotter/{id}/restore',                [BlotterController::class, 'restore'])->name('blotter.restore');
+        Route::delete('/blotter/{id}/force-delete',         [BlotterController::class, 'forceDelete'])->name('blotter.force-delete');
+
+        Route::delete('/officials/{id}',                    [OfficialController::class, 'delete'])->name('officials.delete');
+        Route::post('/officials/{id}/restore',              [OfficialController::class, 'restore'])->name('officials.restore');
+        Route::delete('/officials/{id}/force-delete',       [OfficialController::class, 'forceDelete'])->name('officials.force-delete');
+
+        Route::get('/users',                                [UserController::class, 'users'])->name('users.index');
+        Route::get('/users/data',                           [UserController::class, 'getUsers'])->name('users.data');
+        Route::get('/users/{id}/edit',                      [UserController::class, 'usersEdit'])->name('users.edit');
+        Route::put('/users/{id}/update',                    [UserController::class, 'usersUpdate'])->name('users.update');
+
+        Route::delete('/payments/{id}',                     [PaymentController::class, 'delete'])->name('payments.delete');
     });
 
 });

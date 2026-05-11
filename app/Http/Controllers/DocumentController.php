@@ -126,21 +126,6 @@ class DocumentController extends Controller
                     $buttons .= '<a href="' . route('documents.print', $doc->id) . '"
                         class="btn btn-sm btn-primary"><i class="fa fa-print"></i> Print</a> ';
 
-                    if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
-                        if ($doc->status !== 'Paid') {
-                            $buttons .= '<button class="btn btn-sm btn-success"
-                                data-bs-toggle="modal"
-                                data-bs-target="#payModal"
-                                data-id="' . $doc->id . '"
-                                data-type="document"
-                                data-name="' . $doc->resident->first_name . ' ' . $doc->resident->last_name . '"
-                                data-doctype="' . $doc->document_type . '"
-                                onclick="openPayModal(this)">
-                                <i class="fa fa-money-bill"></i> Pay
-                            </button> ';
-                        }
-                    }
-
                     if (Auth::user()->hasRole('admin')) {
                         $buttons .= '
                             <form action="' . route('documents.delete', $doc->id) . '"

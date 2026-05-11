@@ -65,19 +65,6 @@ class BusinessController extends Controller
 
                 if (Auth::user()->hasAnyRole(['admin', 'secretary'])) {
                     $buttons .= '<a href="' . route('business.edit', $business->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a> ';
-
-                    if ($business->status !== 'Paid') {
-                        $buttons .= '<button class="btn btn-sm btn-success"
-                            data-bs-toggle="modal"
-                            data-bs-target="#payModal"
-                            data-id="' . $business->id . '"
-                            data-type="business"
-                            data-name="' . $business->owner_name . '"
-                            data-doctype="' . $business->business_type . ' Permit"
-                            onclick="openPayModal(this)">
-                            <i class="fa fa-money-bill"></i> Pay
-                        </button> ';
-                    }
                 }
 
                 if (Auth::user()->hasRole('admin')) {

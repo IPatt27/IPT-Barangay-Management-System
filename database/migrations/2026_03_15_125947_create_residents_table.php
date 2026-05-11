@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('contact_number');
             $table->string('status');
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }
@@ -32,7 +33,12 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
+    {   
+        Schema::table('residents', function (Blueprint $table) {
+            
         Schema::dropIfExists('residents');
+        $table->softDeletes();
+
+        });
     }
 };
