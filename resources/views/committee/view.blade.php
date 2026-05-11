@@ -191,25 +191,13 @@
                                 <div class="record-desc">{{ strtoupper($ext) }} &bull; {{ $item->created_at->format('M d, Y') }}</div>
                             </div>
                             <div class="d-flex flex-column gap-1 flex-shrink-0">
-                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank"
-                                   class="btn btn-primary btn-sm">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="{{ asset('storage/' . $item->file_path) }}" download
-                                   class="btn btn-secondary btn-sm">
-                                    <i class="fa-solid fa-download"></i>
-                                </a>
+                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> View</a>
+                                <a href="{{ asset('storage/' . $item->file_path) }}" download class="btn btn-secondary btn-sm"><i class="fa  fa-download"></i> Download</a>
                                 @hasanyrole('admin|secretary')
-                                <button class="btn btn-warning btn-sm"
-                                    onclick="openEdit({{ $item->id }}, '{{ addslashes($item->title) }}', '{{ addslashes($item->description) }}', '{{ $type }}')">
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
+                                <button class="btn btn-warning btn-sm" onclick="openEdit({{ $item->id }}, '{{ addslashes($item->title) }}', '{{ addslashes($item->description) }}', '{{ $type }}')"><i class="fa fa-edit"></i> Edit</button>
                                 <form action="{{ route('committee.record.delete', [$slug, $item->id]) }}" method="POST">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm w-100"
-                                        onclick="return confirm('Delete this file?')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm w-100" onclick="return confirm('Delete this file?')"><i class="fa fa-trash"></i> Delete</button>
                                 </form>
                                 @endhasanyrole
                             </div>
