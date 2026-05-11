@@ -120,6 +120,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/household/{id}',                [HouseholdController::class, 'householdDelete'])->name('household.delete');
         Route::delete('/business/{id}',                 [BusinessController::class, 'businessDelete'])->name('business.delete');
         Route::delete('/documents/{id}',                [DocumentController::class, 'delete'])->name('documents.delete');
+        Route::post('/documents/{id}/restore',       [DocumentController::class, 'restore'])->name('documents.restore');
+        Route::delete('/documents/{id}/force-delete',[DocumentController::class, 'forceDelete'])->name('documents.forceDelete');
         Route::delete('/blotter/{id}',                  [BlotterController::class, 'delete'])->name('blotter.delete');
         Route::delete('/blotter/attachment/{id}',       [BlotterController::class, 'deleteAttachment'])->name('blotter.attachment.delete');
         Route::delete('/officials/{id}',                [OfficialController::class, 'delete'])->name('officials.delete');
