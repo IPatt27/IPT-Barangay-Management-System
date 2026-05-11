@@ -4,17 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // ← add
 
 class Household extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes; // ← add SoftDeletes
 
     protected $fillable = [
         'household_code',
         'purok_id',
         'head_of_family',
         'family_size',
-        'voter_count'
+        'voter_count',
+    ];
+
+    protected $casts = [
+        'deleted_at' => 'datetime', // ← add
     ];
 
     public function purok()

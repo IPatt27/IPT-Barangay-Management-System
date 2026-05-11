@@ -116,11 +116,17 @@ Route::middleware(['auth'])->group(function () {
     // ── ADMIN ONLY (delete and user management) ──
     Route::middleware(['role:admin'])->group(function () {
         Route::delete('/residents/{id}',                    [ResidentController::class, 'residentsDelete'])->name('residents.delete');
-        Route::post('/residents/{id}/restore',              [ResidentController::class, 'restore'])->name('residents.restore');           // ← new
-        Route::delete('/residents/{id}/force-delete',       [ResidentController::class, 'forceDelete'])->name('residents.forceDelete');   // ← new
+        Route::post('/residents/{id}/restore',              [ResidentController::class, 'restore'])->name('residents.restore');           
+        Route::delete('/residents/{id}/force-delete',       [ResidentController::class, 'forceDelete'])->name('residents.forceDelete');   
 
         Route::delete('/purok/{id}',                        [PurokController::class, 'purokDelete'])->name('purok.delete');
+        Route::post('/purok/{id}/restore',                  [PurokController::class, 'restore'])->name('purok.restore');           
+        Route::delete('/purok/{id}/force-delete',           [PurokController::class, 'forceDelete'])->name('purok.forceDelete'); 
+
         Route::delete('/household/{id}',                    [HouseholdController::class, 'householdDelete'])->name('household.delete');
+        Route::post('/household/{id}/restore',              [HouseholdController::class, 'restore'])->name('household.restore');         
+        Route::delete('/household/{id}/force-delete',       [HouseholdController::class, 'forceDelete'])->name('household.forceDelete');
+
         Route::delete('/business/{id}',                     [BusinessController::class, 'businessDelete'])->name('business.delete');
 
         Route::delete('/documents/{id}',                    [DocumentController::class, 'delete'])->name('documents.delete');
