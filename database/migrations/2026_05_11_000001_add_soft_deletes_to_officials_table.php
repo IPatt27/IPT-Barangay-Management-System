@@ -8,15 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('officials', function (Blueprint $table) {
-            $table->softDeletes(); // adds nullable `deleted_at` timestamp column
-        });
+        if (!Schema::hasColumn('officials', 'deleted_at')) {
+            Schema::table('officials', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('officials', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('officials', 'deleted_at')) {
+            Schema::table('officials', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };

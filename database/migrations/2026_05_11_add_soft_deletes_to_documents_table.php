@@ -6,24 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     * Adds the `deleted_at` column required by Laravel's SoftDeletes trait.
-     */
     public function up(): void
     {
-        Schema::table('documents', function (Blueprint $table) {
-            $table->softDeletes(); // adds nullable `deleted_at` timestamp column
-        });
+        if (!Schema::hasColumn('documents', 'deleted_at')) {
+            Schema::table('documents', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('documents', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('documents', 'deleted_at')) {
+            Schema::table('documents', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };
